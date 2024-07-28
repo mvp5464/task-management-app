@@ -5,25 +5,23 @@ const IntroSection = ({
   title,
   description,
 }: {
-  image: string;
+  image: JSX.Element;
   title: string;
   description: string;
 }) => {
   return (
     <>
-      <div className=" flex gap-2">
-        <div className=" flex justify-center items-center">
-          <Image
-            src={image}
-            className="w-full h-20 mr-2"
-            alt="Icon"
-            width={250}
-            height={250}
-          />
+      <div className=" grid grid-cols-[1fr,3fr] gap-2 w-full h-28 border py-3 px-1 border-[#F4F4F4] rounded-lg">
+        <div className="flex justify-center items-center bg-blue-3001">
+          <div className=" flex justify-center items-center bg-fuchsia-4001 ">
+            {image}
+          </div>
         </div>
         <div>
-          <div>{title}</div>
-          <div>{description}</div>
+          <div className=" text-[#757575] text-md font-semibold">{title}</div>
+          <div className=" text-[#868686] text-[0.82rem] leading-4">
+            {description}
+          </div>
         </div>
       </div>
     </>

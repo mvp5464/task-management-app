@@ -1,9 +1,8 @@
-import React from "react";
 import LinesIcon from "./icons/LinesIcon";
-import TimeIcon from "./icons/TimeIcon";
 import PlusIcon from "./icons/PlusIcon";
+import TaskCard from "./TaskCard";
 
-interface TaskType {
+export interface TaskType {
   title: string;
   description: string;
   priority: string;
@@ -21,35 +20,16 @@ const TaskSection = ({
   return (
     <>
       <div>
-        <div className=" flex justify-between">
-          <div>{status}</div>
+        <div className=" flex justify-between mb-4">
+          <div className=" text-[#555555] text-lg ">{status}</div>
           <LinesIcon />
         </div>
-        <div>
-          {taskCard?.map((task) => {
-            return (
-              <>
-                <div>{task.title}</div>
-                <div>{task.description}</div>
-                <div>{task.priority}</div>
-                <div>
-                  <TimeIcon />
-                  <span>{task.deadline}</span>
-                </div>
-                <div>{task.time}</div>
-              </>
-            );
-          })}
+        <div className="mb-4">
+          {/* {taskCard && <TaskCard taskCard={taskCard} />} */}
+          <TaskCard taskCard={taskCard} />
         </div>
-        <div>
-          <div>Title</div>
-          <div>Description</div>
-          <div>Priority</div>
-          <div>Deadline</div>
-          <div>time</div>
-        </div>
-        <button className=" flex justify-between w-full">
-          <span>Add new</span>
+        <button className=" flex justify-between items-center w-full bg-gradient-to-b from-[#3A3A3A] to-[#202020] text-white p-2 rounded-lg">
+          <span className="text-sm ">Add new</span>
           <PlusIcon />
         </button>
       </div>
