@@ -1,4 +1,4 @@
-export default function EyeIcon({
+export default function SearchIcon({
   className = "w-6 h-6",
 }: {
   className?: string;
@@ -11,15 +11,15 @@ export default function EyeIcon({
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
-        d="M3 13C6.6 5 17.4 5 21 13"
-        stroke="#999999"
+        d="M17 17L21 21"
+        stroke="#797979"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
-        d="M12 17C10.3431 17 9 15.6569 9 14C9 12.3431 10.3431 11 12 11C13.6569 11 15 12.3431 15 14C15 15.6569 13.6569 17 12 17Z"
-        stroke="#999999"
+        d="M3 11C3 15.4183 6.58172 19 11 19C13.213 19 15.2161 18.1015 16.6644 16.6493C18.1077 15.2022 19 13.2053 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11Z"
+        stroke="#797979"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"

@@ -1,5 +1,5 @@
-import AuthPage from "@/components/layout/AuthPage";
+import AuthComp from "@/components/layout/AuthComp";
 
 export default async function LoginPage() {
-  return <AuthPage role="login" />;
+  return <AuthComp role="login" />;
 }

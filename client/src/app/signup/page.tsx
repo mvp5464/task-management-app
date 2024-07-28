@@ -1,5 +1,5 @@
-import AuthPage from "@/components/layout/AuthPage";
+import AuthComp from "@/components/layout/AuthComp";
 
 export default async function SignupPage() {
-  return <AuthPage role="signup" />;
+  return <AuthComp role="signup" />;
 }

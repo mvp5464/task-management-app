@@ -1,4 +1,4 @@
-export default function EyeIcon({
+export default function AutomationIcon({
   className = "w-6 h-6",
 }: {
   className?: string;
@@ -11,17 +11,15 @@ export default function EyeIcon({
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
-        d="M3 13C6.6 5 17.4 5 21 13"
-        stroke="#999999"
+        d="M8 15C12.8747 15 15 12.949 15 8C15 12.949 17.1104 15 22 15C17.1104 15 15 17.1104 15 22C15 17.1104 12.8747 15 8 15Z"
+        stroke="#797979"
         strokeWidth="1.5"
-        strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
-        d="M12 17C10.3431 17 9 15.6569 9 14C9 12.3431 10.3431 11 12 11C13.6569 11 15 12.3431 15 14C15 15.6569 13.6569 17 12 17Z"
-        stroke="#999999"
+        d="M2 6.5C5.13376 6.5 6.5 5.18153 6.5 2C6.5 5.18153 7.85669 6.5 11 6.5C7.85669 6.5 6.5 7.85669 6.5 11C6.5 7.85669 5.13376 6.5 2 6.5Z"
+        stroke="#797979"
         strokeWidth="1.5"
-        strokeLinecap="round"
         strokeLinejoin="round"
       />
     </svg>

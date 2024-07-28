@@ -3,7 +3,7 @@ import EyeIcon from "@/components/icons/EyeIcon";
 import Link from "next/link";
 import { useState } from "react";
 
-const AuthPage = ({ role }: { role: "login" | "signup" }) => {
+const AuthComp = ({ role }: { role: "login" | "signup" }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   function togglePasswordVisibility() {
     setIsPasswordVisible((prevState: any) => !prevState);
@@ -68,4 +68,4 @@ const AuthPage = ({ role }: { role: "login" | "signup" }) => {
   );
 };
 
-export default AuthPage;
+export default AuthComp;
