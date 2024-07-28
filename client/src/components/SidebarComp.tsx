@@ -1,17 +1,23 @@
+"use client";
+import { Dispatch, SetStateAction } from "react";
 import AnalyticsIcon from "./icons/AnalyticsIcon";
 import BellIcon from "./icons/BellIcon";
 import BoardsIcon from "./icons/BoardsIcon";
 import DoubleArrowIcon from "./icons/DoubleArrowIcon";
 import DownloadIcon from "./icons/DownloadIcon";
 import HomeIcon from "./icons/HomeIcon";
-import LoadingIcon from "./icons/LoadingIcon";
 import PlusCircleIcon from "./icons/PlusCircleIcon";
 import SettingsIcon from "./icons/SettingsIcon";
 import TeamsIcon from "./icons/TeamsIcon";
 import SideSection from "./SideSection";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import LoadingIcon from "./icons/LoadingIcon";
 
-const SidebarComp = () => {
+const SidebarComp = ({
+  setShowPopup,
+}: {
+  setShowPopup: Dispatch<SetStateAction<boolean>>;
+}) => {
   return (
     <>
       <div className=" bg-white h-screen border-r1 p-3 flex flex-col justify-between ">
@@ -43,7 +49,10 @@ const SidebarComp = () => {
             <SideSection icon={<AnalyticsIcon />} name={"Analytics"} />
           </div>
           <div className="bg-gradient-to-b  from-[#4B36CC] to-[#9C93D4] rounded-lg">
-            <button className=" bg-gradient-to-b from-[#4C38C2] to-[#2F2188] w-full text-white font- text-lg rounded-lg flex gap-2 py-3 justify-center items-center">
+            <button
+              className=" bg-gradient-to-b from-[#4C38C2] to-[#2F2188] w-full text-white font- text-lg rounded-lg flex gap-2 py-3 justify-center items-center"
+              onClick={() => setShowPopup(true)}
+            >
               <span>Create new task&nbsp;</span>
               <PlusCircleIcon />
             </button>

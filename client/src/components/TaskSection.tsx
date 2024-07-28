@@ -1,3 +1,5 @@
+"use client";
+import { Dispatch, SetStateAction } from "react";
 import LinesIcon from "./icons/LinesIcon";
 import PlusIcon from "./icons/PlusIcon";
 import TaskCard from "./TaskCard";
@@ -13,9 +15,11 @@ export interface TaskType {
 const TaskSection = ({
   status,
   taskCard,
+  setShowPopup,
 }: {
   status: string;
   taskCard?: TaskType[];
+  setShowPopup: Dispatch<SetStateAction<boolean>>;
 }) => {
   return (
     <>
@@ -28,7 +32,10 @@ const TaskSection = ({
           {/* {taskCard && <TaskCard taskCard={taskCard} />} */}
           <TaskCard taskCard={taskCard} />
         </div>
-        <button className=" flex justify-between items-center w-full bg-gradient-to-b from-[#3A3A3A] to-[#202020] text-white p-2 rounded-lg">
+        <button
+          className=" flex justify-between items-center w-full bg-gradient-to-b from-[#3A3A3A] to-[#202020] text-white p-2 rounded-lg"
+          onClick={() => setShowPopup(true)}
+        >
           <span className="text-sm ">Add new</span>
           <PlusIcon />
         </button>
