@@ -1,6 +1,7 @@
 "use client";
 import EyeIcon from "@/components/icons/EyeIcon";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
 export interface SigningType {
@@ -10,12 +11,15 @@ export interface SigningType {
 }
 
 const AuthComp = ({ role }: { role: "login" | "signup" }) => {
+  const router = useRouter();
   const [input, setInput] = useState<SigningType>({
     fullName: "",
     email: "",
     password: "",
   });
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   function togglePasswordVisibility() {
     setIsPasswordVisible((prevState: any) => !prevState);
   }
@@ -23,6 +27,8 @@ const AuthComp = ({ role }: { role: "login" | "signup" }) => {
     if (e) {
       e.preventDefault();
     }
+    setErrorMessage("");
+    setIsLoading(true);
     // check if value are not empty else error
     try {
       if (role === "login") {
@@ -31,9 +37,13 @@ const AuthComp = ({ role }: { role: "login" | "signup" }) => {
           body: JSON.stringify(input),
           headers: { "Content-Type": "application/json" },
         });
-        console.log({ res });
         const data = await res.json();
-        console.log({ data });
+
+        if (res.ok) {
+          router.push("/dashboard");
+        } else {
+          setErrorMessage(data.msg);
+        }
         window.localStorage.setItem("token", data.msg);
       }
 
@@ -43,20 +53,26 @@ const AuthComp = ({ role }: { role: "login" | "signup" }) => {
           body: JSON.stringify(input),
           headers: { "Content-Type": "application/json" },
         });
-        console.log({ res });
+
         const data = await res.json();
-        console.log({ data });
+        if (res.ok) {
+          router.push("/dashboard");
+        } else {
+          setErrorMessage(data.msg);
+        }
       }
+      setIsLoading(false);
     } catch (e) {
-      console.log("ERRRRRRRRRRR", e);
+      console.log("Error:", e);
+      setIsLoading(false);
     }
   }
 
   return (
-    <div className=" h-screen pt-20 bg-gradient-to-b from-[#FFFFFF] to-[#AFA3FF]">
-      <div className=" max-w-[37rem] mx-auto y-20 flex flex-col justify-center items-center p-14 rounded-2xl bg-gradient-to-b from-[#F7F7F7] to-[#F0F0F0] border-[#CECECE] border">
+    <div className=" h-screen pt-28 bg-gradient-to-b from-[#FFFFFF] to-[#AFA3FF]">
+      <div className=" max-w-[37rem] mx-auto flex flex-col justify-center items-center pt-14 pb-2 px-14 rounded-2xl bg-gradient-to-b from-[#F7F7F7] to-[#F0F0F0] border-[#CECECE] border">
         <div>
-          <h2 className=" text-4xl text-[#2D2D2D] mb-5 font-bold text-center">
+          <h2 className=" text-[2.3rem] text-[#2D2D2D] mb-5 font-bold text-center">
             Welcome to <span className=" text-[#4534AC]">Workflo</span>!
           </h2>
         </div>
@@ -106,9 +122,11 @@ const AuthComp = ({ role }: { role: "login" | "signup" }) => {
         <div className=" flex flex-col gap-4 w-full mb-5">
           <button
             className=" text-white py-3 rounded-lg bg-gradient-to-b from-[#8c80ce] to-[#7066b0] "
+            disabled={isLoading}
             onClick={handleSubmit}
           >
             {role === "signup" ? "Sign up" : "Login"}
+            {isLoading && "..."}
           </button>
         </div>
         {role === "signup" ? (
@@ -128,6 +146,13 @@ const AuthComp = ({ role }: { role: "login" | "signup" }) => {
             .
           </div>
         )}
+        <div
+          className={`my-4 text-red-500 font-semibold text-xl ${
+            errorMessage.length > 0 ? "visible" : "invisible"
+          }`}
+        >
+          {`"${errorMessage}"`}
+        </div>
       </div>
     </div>
   );
