@@ -1,5 +1,5 @@
 "use client";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useContext } from "react";
 import PopupSection from "./PopupSection";
 import CrossIcon from "./icons/CrossIcon";
 import TwoSideArrowIcon from "./icons/TwoSideArrowIcon";
@@ -10,12 +10,19 @@ import CalendarIcon from "./icons/CalendarIcon";
 import PenIcon from "./icons/PenIcon";
 import PlusBlackIcon from "./icons/PlusBlackIcon";
 import LoadingIcon from "./icons/LoadingIcon";
+import { TaskContext } from "@/context/AllContext";
+import { TaskType } from "@/context/AllContextProvider";
 
 const TaskPopup = ({
   setShowPopup,
 }: {
   setShowPopup: Dispatch<SetStateAction<boolean>>;
 }) => {
+  const {
+    task,
+    setTask,
+  }: { task: TaskType; setTask: Dispatch<SetStateAction<TaskType>> } =
+    useContext(TaskContext);
   return (
     <div
       className=" fixed inset-0 bg-black/60 flex justify-center h-screen  items-center"
@@ -52,7 +59,10 @@ const TaskPopup = ({
             <input
               type="text"
               placeholder="Title"
-              className="w-full h-14 font-semibold text-[2.7rem] placeholder:text-[#CCCCCC]"
+              className="w-full h-14 font-semibold text-[2.7rem] text-[#303030] placeholder:text-[#CCCCCC]"
+              onChange={(e) =>
+                setTask((val: any) => ({ ...val, title: e.target.value }))
+              }
             />
           </div>
           <div>
@@ -68,7 +78,7 @@ const TaskPopup = ({
           <input
             type="text"
             placeholder="Start writing, or drag your own files here."
-            className="w-full placeholder:text-sm"
+            className="w-full placeholder:text-sm text-[#666666] py-2"
           />
         </div>
       </div>

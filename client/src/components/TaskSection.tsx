@@ -3,14 +3,7 @@ import { Dispatch, SetStateAction } from "react";
 import LinesIcon from "./icons/LinesIcon";
 import PlusIcon from "./icons/PlusIcon";
 import TaskCard from "./TaskCard";
-
-export interface TaskType {
-  title: string;
-  description: string;
-  priority: string;
-  deadline: string;
-  time: string;
-}
+import { TaskType } from "@/context/AllContextProvider";
 
 const TaskSection = ({
   status,

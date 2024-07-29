@@ -1,0 +1,5 @@
+import { createContext } from "react";
+
+export const UserContext = createContext<any | null>(null);
+
+export const TaskContext = createContext<any>(null);
