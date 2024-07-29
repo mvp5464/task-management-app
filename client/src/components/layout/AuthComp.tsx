@@ -1,13 +1,57 @@
 "use client";
 import EyeIcon from "@/components/icons/EyeIcon";
 import Link from "next/link";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
+
+export interface SigningType {
+  fullName: string;
+  email: string;
+  password: string;
+}
 
 const AuthComp = ({ role }: { role: "login" | "signup" }) => {
+  const [input, setInput] = useState<SigningType>({
+    fullName: "",
+    email: "",
+    password: "",
+  });
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   function togglePasswordVisibility() {
     setIsPasswordVisible((prevState: any) => !prevState);
   }
+  async function handleSubmit(e: FormEvent<HTMLButtonElement>) {
+    if (e) {
+      e.preventDefault();
+    }
+    // check if value are not empty else error
+    try {
+      if (role === "login") {
+        const res = await fetch("http://localhost:8080/api/v1/user/login", {
+          method: "POST",
+          body: JSON.stringify(input),
+          headers: { "Content-Type": "application/json" },
+        });
+        console.log({ res });
+        const data = await res.json();
+        console.log({ data });
+        window.localStorage.setItem("token", data.msg);
+      }
+
+      if (role === "signup") {
+        const res = await fetch("http://localhost:8080/api/v1/user/signup", {
+          method: "POST",
+          body: JSON.stringify(input),
+          headers: { "Content-Type": "application/json" },
+        });
+        console.log({ res });
+        const data = await res.json();
+        console.log({ data });
+      }
+    } catch (e) {
+      console.log("ERRRRRRRRRRR", e);
+    }
+  }
+
   return (
     <div className=" h-screen pt-20 bg-gradient-to-b from-[#FFFFFF] to-[#AFA3FF]">
       <div className=" max-w-[37rem] mx-auto y-20 flex flex-col justify-center items-center p-14 rounded-2xl bg-gradient-to-b from-[#F7F7F7] to-[#F0F0F0] border-[#CECECE] border">
@@ -22,17 +66,35 @@ const AuthComp = ({ role }: { role: "login" | "signup" }) => {
               className=" py-3 px-2 rounded-lg bg-[#EBEBEB] placeholder-[#999999] focus:outline-[#999999] focus:outline "
               type="text"
               placeholder="Full name"
+              onChange={(e) =>
+                setInput((val: SigningType) => ({
+                  ...val,
+                  fullName: e.target.value,
+                }))
+              }
             />
           )}
           <input
             className=" py-3 px-2 rounded-lg bg-[#EBEBEB] placeholder-[#999999] focus:outline-[#999999] focus:outline "
             type="text"
             placeholder="Your email"
+            onChange={(e) =>
+              setInput((val: SigningType) => ({
+                ...val,
+                email: e.target.value,
+              }))
+            }
           />
           <input
             className=" py-3 px-2 rounded-lg bg-[#EBEBEB] placeholder-[#999999] focus:outline-[#999999] focus:outline "
             type={isPasswordVisible ? "text" : "password"}
             placeholder="Password"
+            onChange={(e) =>
+              setInput((val: SigningType) => ({
+                ...val,
+                password: e.target.value,
+              }))
+            }
           />
           <button
             className="absolute bottom-0 right-0 flex h-10 items-center px-4 text-gray-600"
@@ -42,7 +104,10 @@ const AuthComp = ({ role }: { role: "login" | "signup" }) => {
           </button>
         </div>
         <div className=" flex flex-col gap-4 w-full mb-5">
-          <button className=" text-white py-3 rounded-lg bg-gradient-to-b from-[#8c80ce] to-[#7066b0] ">
+          <button
+            className=" text-white py-3 rounded-lg bg-gradient-to-b from-[#8c80ce] to-[#7066b0] "
+            onClick={handleSubmit}
+          >
             {role === "signup" ? "Sign up" : "Login"}
           </button>
         </div>

@@ -13,7 +13,7 @@ export interface TaskType {
   description: string;
   status: string;
   priority: "Low" | "Medium" | "Urgent" | "null";
-  deadline: string;
+  deadline: Date | null;
 }
 
 export const UserContextProvider = ({ children }: { children: ReactNode }) => {
@@ -36,7 +36,7 @@ export const TaskContextProvider = ({ children }: { children: ReactNode }) => {
     description: "",
     status: "",
     priority: "null",
-    deadline: "",
+    deadline: null,
   });
 
   return (

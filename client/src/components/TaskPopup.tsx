@@ -1,5 +1,5 @@
 "use client";
-import { Dispatch, SetStateAction, useContext } from "react";
+import { Dispatch, SetStateAction, useContext, useEffect } from "react";
 import PopupSection from "./PopupSection";
 import CrossIcon from "./icons/CrossIcon";
 import TwoSideArrowIcon from "./icons/TwoSideArrowIcon";
@@ -23,6 +23,25 @@ const TaskPopup = ({
     setTask,
   }: { task: TaskType; setTask: Dispatch<SetStateAction<TaskType>> } =
     useContext(TaskContext);
+
+  console.log({ taskSend: task });
+  function handleSubmit() {
+    const data = JSON.stringify(task);
+    fetch("http://localhost:8080/api/v1/user/signup", {
+      method: "POST",
+      body: data,
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => {
+        console.log(res);
+        return res.json();
+      })
+      .then((data) => {
+        console.log({ data });
+      })
+      .catch((e) => console.log("Error while sending data", e));
+  }
+
   return (
     <div
       className=" fixed inset-0 bg-black/60 flex justify-center h-screen  items-center"
@@ -45,6 +64,13 @@ const TaskPopup = ({
               </button>
             </div>
             <div className=" flex gap-4">
+              <button
+                className=" flex gap-4 p-[0.45rem] rounded-md bg-[#F4F4F4] text-[0.9rem] text-[#797979]"
+                onClick={handleSubmit}
+              >
+                <span>Save</span>
+                <ShareIcon className="w-5 h-5" />
+              </button>
               <div className=" flex gap-4 p-[0.45rem] rounded-md bg-[#F4F4F4] text-[0.9rem] text-[#797979]">
                 <span>Share</span>
                 <ShareIcon className="w-5 h-5" />

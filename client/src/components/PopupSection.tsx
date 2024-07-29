@@ -13,10 +13,7 @@ const PopupSection = ({
 }) => {
   const [value, setValue] = useState<string>("NA");
 
-  const {
-    task,
-    setTask,
-  }: { task: TaskType; setTask: Dispatch<SetStateAction<TaskType>> } =
+  const { setTask }: { setTask: Dispatch<SetStateAction<TaskType>> } =
     useContext(TaskContext);
 
   return (
@@ -29,6 +26,9 @@ const PopupSection = ({
           className="placeholder:text-sm p-2.5 text-[#727272]s text-sm rounded-lg block w-full "
           type="text"
           placeholder="Not selected"
+          onChange={(e) =>
+            setTask((val) => ({ ...val, description: e.target.value }))
+          }
         />
       )}
 

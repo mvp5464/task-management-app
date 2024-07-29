@@ -9,11 +9,26 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { TaskType } from "@/context/AllContextProvider";
+import { TaskContext } from "@/context/AllContext";
 
 export function DatePickerDemo() {
   const [date, setDate] = useState<Date>();
   console.log({ date });
+
+  const { setTask }: { setTask: Dispatch<SetStateAction<TaskType>> } =
+    useContext(TaskContext);
+
+  useEffect(() => {
+    date && setTask((v) => ({ ...v, deadline: date }));
+  }, [date]);
 
   return (
     <Popover>
