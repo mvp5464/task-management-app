@@ -1,6 +1,6 @@
 "use client";
 import { ReactNode, useState } from "react";
-import { TaskContext, UserContext } from "./AllContext";
+import { PopupContext, TaskContext, UserContext } from "./AllContext";
 
 export interface UserType {
   fullName: string;
@@ -12,10 +12,17 @@ export interface TaskType {
   _id?: string;
   title: string;
   description?: string;
-  status: string;
+  status: "To do" | "In progress" | "Under review" | "Finished" | "";
   priority?: "Low" | "Medium" | "Urgent" | "null";
   deadline?: Date | null;
 }
+
+export type StatusType =
+  | "To do"
+  | "In progress"
+  | "Under review"
+  | "Finished"
+  | "";
 
 export const UserContextProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserType>({
@@ -44,5 +51,18 @@ export const TaskContextProvider = ({ children }: { children: ReactNode }) => {
     <TaskContext.Provider value={{ task, setTask }}>
       {children}
     </TaskContext.Provider>
+  );
+};
+
+export const PopupContextProvider = ({ children }: { children: ReactNode }) => {
+  const [showPopup, setShowPopup] = useState<{
+    popup: boolean;
+    status: StatusType;
+  }>({ popup: false, status: "" });
+
+  return (
+    <PopupContext.Provider value={{ showPopup, setShowPopup }}>
+      {children}
+    </PopupContext.Provider>
   );
 };

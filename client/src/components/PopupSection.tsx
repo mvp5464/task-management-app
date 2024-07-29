@@ -1,7 +1,13 @@
 "use client";
-import { TaskContext } from "@/context/AllContext";
+import { PopupContext, TaskContext } from "@/context/AllContext";
 import { TaskType } from "@/context/AllContextProvider";
-import { Dispatch, SetStateAction, useContext, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { DatePickerDemo } from "./DatePicker";
 
 const PopupSection = ({
@@ -11,11 +17,19 @@ const PopupSection = ({
   logo: JSX.Element;
   title: string;
 }) => {
-  const [value, setValue] = useState<string>("NA");
+  const [value, setValue] = useState<string>("NA"); //REMOVE THIS FOR ALL
+  const { showPopup } = useContext(PopupContext);
 
-  const { setTask }: { setTask: Dispatch<SetStateAction<TaskType>> } =
+  const {
+    task,
+    setTask,
+  }: { task: TaskType; setTask: Dispatch<SetStateAction<TaskType>> } =
     useContext(TaskContext);
-
+  useEffect(() => {
+    showPopup && setTask((val) => ({ ...val, status: showPopup.status }));
+  }, [showPopup]);
+  console.log({ showPopup });
+  console.log({ task });
   return (
     <div className=" flex gap-3 items-center mb-4">
       <div>{logo}</div>
@@ -34,15 +48,15 @@ const PopupSection = ({
 
       {title === "Status" && (
         <select
-          defaultValue={"NA"}
+          defaultValue={showPopup.status}
           className={`bg-white appearance-none ${
-            value === "NA" ? " text-[#C1BDBD]" : " text-black"
+            showPopup.status === "" ? " text-[#C1BDBD]" : " text-black"
           } focus:text-[#666666]s text-sm rounded-lg  block w-full p-2.5`}
           onChange={(e) =>
             setTask((val: any) => ({ ...val, status: e.target.value }))
           }
         >
-          <option className=" text-black" value={"NA"} disabled>
+          <option className=" text-black" value={""} disabled>
             Not selected
           </option>
           <option className=" text-black" value="To do">
@@ -62,6 +76,7 @@ const PopupSection = ({
 
       {title === "Priority" && (
         <select
+          defaultValue={"NA"}
           className={`bg-white appearance-none ${
             value === "NA" ? " text-[#C1BDBD]" : " text-black"
           } focus:text-[#666666]s text-sm rounded-lg  block w-full p-2.5`}
@@ -69,7 +84,7 @@ const PopupSection = ({
             setTask((val: any) => ({ ...val, priority: e.target.value }))
           }
         >
-          <option className=" text-black" value={"null"} selected>
+          <option className=" text-black" value={"null"}>
             Not selected
           </option>
           <option className=" text-black" value="Low">

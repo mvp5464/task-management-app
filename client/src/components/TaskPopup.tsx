@@ -10,15 +10,18 @@ import CalendarIcon from "./icons/CalendarIcon";
 import PenIcon from "./icons/PenIcon";
 import PlusBlackIcon from "./icons/PlusBlackIcon";
 import LoadingIcon from "./icons/LoadingIcon";
-import { TaskContext } from "@/context/AllContext";
+import { PopupContext, TaskContext } from "@/context/AllContext";
 import { TaskType } from "@/context/AllContextProvider";
 import DownloadIcon from "./icons/DownloadIcon";
+// import { StatusType } from "./layout/DashBoardComp";
 
 const TaskPopup = ({
-  setShowPopup,
+  fetchingTasks,
 }: {
-  setShowPopup: Dispatch<SetStateAction<boolean>>;
+  fetchingTasks: () => Promise<void>;
 }) => {
+  const { setShowPopup } = useContext(PopupContext);
+
   const {
     task,
     setTask,
@@ -40,10 +43,11 @@ const TaskPopup = ({
 
       console.log(res);
       if (res.ok) {
-        //show conformation popup
-        setShowPopup(false);
+        //show conformation TOSTER
+        fetchingTasks();
+        setShowPopup({ popup: false, status: "" });
       } else {
-        // show error popup
+        // show error TOSTER
       }
 
       const data = await res.json();
@@ -57,7 +61,7 @@ const TaskPopup = ({
     <div
       className=" fixed inset-0 bg-black/60 flex justify-center h-screen  items-center"
       onClick={() => {
-        setShowPopup(false);
+        setShowPopup({ popup: false, status: "" });
       }}
     >
       <div
@@ -67,7 +71,9 @@ const TaskPopup = ({
         <div>
           <div className=" flex justify-between items-center mb-6">
             <div className=" flex items-center gap-3">
-              <button onClick={() => setShowPopup(false)}>
+              <button
+                onClick={() => setShowPopup({ popup: false, status: "" })}
+              >
                 <CrossIcon />
               </button>
               <button>

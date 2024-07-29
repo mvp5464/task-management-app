@@ -33,12 +33,12 @@ const AuthComp = ({ role }: { role: "login" | "signup" }) => {
     }
     setErrorMessage("");
     setIsLoading(true);
-
-    if (input.email.length <= 0 || input.password.length <= 0) {
-      setIsLoading(false);
-      setErrorMessage("Wrong input");
-      return;
-    }
+    // WHY STATE IS SHOWING EMPTY BUT WHEN WRITE THEN IT SHOWS (ONCHANGE PROBLEM)
+    // if (input.email.length <= 0 || input.password.length <= 0) {
+    //   setIsLoading(false);
+    //   setErrorMessage("Wrong input");
+    //   return;
+    // }
     try {
       if (role === "login") {
         const res = await fetch("http://localhost:8080/api/v1/user/login", {

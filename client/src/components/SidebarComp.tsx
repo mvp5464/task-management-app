@@ -1,5 +1,5 @@
 "use client";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useContext } from "react";
 import AnalyticsIcon from "./icons/AnalyticsIcon";
 import BellIcon from "./icons/BellIcon";
 import BoardsIcon from "./icons/BoardsIcon";
@@ -13,13 +13,13 @@ import SideSection from "./SideSection";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import LoadingIcon from "./icons/LoadingIcon";
 import { useRouter } from "next/navigation";
+import { PopupContext } from "@/context/AllContext";
 
-const SidebarComp = ({
-  setShowPopup,
-}: {
-  setShowPopup: Dispatch<SetStateAction<boolean>>;
-}) => {
+const SidebarComp = ({}: {}) => {
+  const { setShowPopup } = useContext(PopupContext);
+
   const router = useRouter();
+
   return (
     <>
       <div className=" bg-white h-screen border-r1 p-3 flex flex-col justify-between ">
@@ -59,7 +59,7 @@ const SidebarComp = ({
           <div className="bg-gradient-to-b  from-[#4B36CC] to-[#9C93D4] rounded-lg">
             <button
               className=" bg-gradient-to-b from-[#4C38C2] to-[#2F2188] w-full text-white font- text-lg rounded-lg flex gap-2 py-3 justify-center items-center"
-              onClick={() => setShowPopup(true)}
+              onClick={() => setShowPopup({ popup: true, status: "" })}
             >
               <span>Create new task&nbsp;</span>
               <PlusCircleIcon />

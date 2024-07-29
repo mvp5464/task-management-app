@@ -12,33 +12,63 @@ import TabSection from "../TabSection";
 import IntroducingImg from "../icons/IntroducingImg";
 import ShareImg from "../icons/ShareImg";
 import AccessImg from "../icons/AccessImg";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import TaskPopup from "../TaskPopup";
 import { TaskType } from "@/context/AllContextProvider";
+import { PopupContext } from "@/context/AllContext";
+
+interface CategorizedTask {
+  "To do": TaskType[];
+  "In progress": TaskType[];
+  "Under review": TaskType[];
+  Finished: TaskType[];
+}
 
 const DashBoardComp = () => {
-  const [showPopup, setShowPopup] = useState<boolean>(false);
+  const { showPopup, setShowPopup } = useContext(PopupContext);
   const [tasks, setTasks] = useState<TaskType[]>([]);
+  const [categorizedTasks, setCategorizedTasks] = useState<CategorizedTask>({
+    "To do": [],
+    "In progress": [],
+    "Under review": [],
+    Finished: [],
+  });
 
   useEffect(() => {
-    const fetching = async () => {
-      try {
-        const res = await fetch("http://localhost:8080/api/v1/task/get-task");
-        const data = await res.json();
-        console.log({ res });
-        console.log({ data });
-        setTasks(data.msg);
-      } catch (e) {
-        console.log("Error while fetching data ", e);
-      }
+    const categorized: CategorizedTask = {
+      "To do": [],
+      "In progress": [],
+      "Under review": [],
+      Finished: [],
     };
-    fetching();
+
+    tasks.forEach((task) => {
+      if (task.status !== "") {
+        if (categorized[task.status]) {
+          categorized[task.status].push(task);
+        }
+      }
+    });
+
+    setCategorizedTasks(categorized);
+  }, [tasks]);
+  const fetchingTasks = async () => {
+    try {
+      const res = await fetch("http://localhost:8080/api/v1/task/get-task");
+      const data = await res.json();
+      setTasks(data.msg);
+    } catch (e) {
+      console.log("Error while fetching data ", e);
+    }
+  };
+  useEffect(() => {
+    fetchingTasks();
   }, []);
-  console.log({ tasks });
+
   return (
     <>
       <div className=" grid grid-cols-[1fr,4fr] w-full">
-        <SidebarComp setShowPopup={setShowPopup} />
+        <SidebarComp />
         <div className=" bg-[#F4F4F4] border-l-2">
           <div className=" m-3 mt-5 mr-5 bg-white">
             <div className=" flex justify-between">
@@ -90,7 +120,7 @@ const DashBoardComp = () => {
                 </div>
                 <button
                   className=" bg-gradient-to-b from-[#4C38C2] to-[#2F2188] px-2 py-1 text-white font- text-[0.9rem] rounded-lg flex gap-2 justify-center items-center"
-                  onClick={() => setShowPopup(true)}
+                  onClick={() => setShowPopup({ popup: true, status: "" })}
                 >
                   <span>Create new&nbsp;</span>
                   <PlusCircleIcon />
@@ -99,33 +129,29 @@ const DashBoardComp = () => {
             </div>
             <div className=" grid grid-cols-4 gap-5 px-4">
               <TaskSection
-                taskCard={tasks}
+                taskCard={categorizedTasks["To do"]}
                 status={"To do"}
-                setShowPopup={setShowPopup}
               />
               <TaskSection
-                taskCard={tasks}
+                taskCard={categorizedTasks["In progress"]}
                 status={"In progress"}
-                setShowPopup={setShowPopup}
               />
               <TaskSection
-                taskCard={tasks}
+                taskCard={categorizedTasks["Under review"]}
                 status={"Under review"}
-                setShowPopup={setShowPopup}
               />
               <TaskSection
-                taskCard={tasks}
+                taskCard={categorizedTasks["Finished"]}
                 status={"Finished"}
-                setShowPopup={setShowPopup}
               />
             </div>
           </div>
         </div>
       </div>
 
-      {showPopup && (
+      {showPopup.popup && (
         <div className=" ">
-          <TaskPopup setShowPopup={setShowPopup} />
+          <TaskPopup fetchingTasks={fetchingTasks} />
         </div>
       )}
     </>
