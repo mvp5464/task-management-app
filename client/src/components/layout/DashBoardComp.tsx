@@ -12,12 +12,29 @@ import TabSection from "../TabSection";
 import IntroducingImg from "../icons/IntroducingImg";
 import ShareImg from "../icons/ShareImg";
 import AccessImg from "../icons/AccessImg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TaskPopup from "../TaskPopup";
+import { TaskType } from "@/context/AllContextProvider";
 
 const DashBoardComp = () => {
   const [showPopup, setShowPopup] = useState<boolean>(false);
+  const [tasks, setTasks] = useState<TaskType[]>([]);
 
+  useEffect(() => {
+    const fetching = async () => {
+      try {
+        const res = await fetch("http://localhost:8080/api/v1/task/get-task");
+        const data = await res.json();
+        console.log({ res });
+        console.log({ data });
+        setTasks(data.msg);
+      } catch (e) {
+        console.log("Error while fetching data ", e);
+      }
+    };
+    fetching();
+  }, []);
+  console.log({ tasks });
   return (
     <>
       <div className=" grid grid-cols-[1fr,4fr] w-full">
@@ -81,13 +98,26 @@ const DashBoardComp = () => {
               </div>
             </div>
             <div className=" grid grid-cols-4 gap-5 px-4">
-              <TaskSection status={"To do"} setShowPopup={setShowPopup} />
-              <TaskSection status={"In progress"} setShowPopup={setShowPopup} />
               <TaskSection
+                taskCard={tasks}
+                status={"To do"}
+                setShowPopup={setShowPopup}
+              />
+              <TaskSection
+                taskCard={tasks}
+                status={"In progress"}
+                setShowPopup={setShowPopup}
+              />
+              <TaskSection
+                taskCard={tasks}
                 status={"Under review"}
                 setShowPopup={setShowPopup}
               />
-              <TaskSection status={"Finished"} setShowPopup={setShowPopup} />
+              <TaskSection
+                taskCard={tasks}
+                status={"Finished"}
+                setShowPopup={setShowPopup}
+              />
             </div>
           </div>
         </div>

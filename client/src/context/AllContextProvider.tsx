@@ -9,11 +9,12 @@ export interface UserType {
 }
 
 export interface TaskType {
+  _id?: string;
   title: string;
-  description: string;
+  description?: string;
   status: string;
-  priority: "Low" | "Medium" | "Urgent" | "null";
-  deadline: Date | null;
+  priority?: "Low" | "Medium" | "Urgent" | "null";
+  deadline?: Date | null;
 }
 
 export const UserContextProvider = ({ children }: { children: ReactNode }) => {

@@ -11,7 +11,7 @@ export const signInZod = z.object({
   password: z.string().min(6),
 });
 
-export const TaskType = z.object({
+export const TaskZod = z.object({
   title: z.string(),
   description: z.string().optional(),
   status: z.string(),
@@ -21,4 +21,4 @@ export const TaskType = z.object({
 
 export type SignUpType = z.infer<typeof signUpZod>;
 export type SignInType = z.infer<typeof signInZod>;
-export type TaskTypeType = z.infer<typeof TaskType>;
+export type TaskType = z.infer<typeof TaskZod>;

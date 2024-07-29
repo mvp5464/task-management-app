@@ -34,6 +34,7 @@ const PopupSection = ({
 
       {title === "Status" && (
         <select
+          defaultValue={"NA"}
           className={`bg-white appearance-none ${
             value === "NA" ? " text-[#C1BDBD]" : " text-black"
           } focus:text-[#666666]s text-sm rounded-lg  block w-full p-2.5`}
@@ -41,7 +42,7 @@ const PopupSection = ({
             setTask((val: any) => ({ ...val, status: e.target.value }))
           }
         >
-          <option className=" text-black" value={"NA"} selected>
+          <option className=" text-black" value={"NA"} disabled>
             Not selected
           </option>
           <option className=" text-black" value="To do">

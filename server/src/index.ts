@@ -7,7 +7,6 @@ import { taskRoute } from "./routes/task";
 const router = express.Router();
 const PORT = 8080;
 
-console.log("okk");
 app.use(cors());
 app.use(express.json());
 

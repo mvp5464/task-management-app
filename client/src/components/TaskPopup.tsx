@@ -1,5 +1,5 @@
 "use client";
-import { Dispatch, SetStateAction, useContext, useEffect } from "react";
+import { Dispatch, SetStateAction, useContext } from "react";
 import PopupSection from "./PopupSection";
 import CrossIcon from "./icons/CrossIcon";
 import TwoSideArrowIcon from "./icons/TwoSideArrowIcon";
@@ -12,6 +12,7 @@ import PlusBlackIcon from "./icons/PlusBlackIcon";
 import LoadingIcon from "./icons/LoadingIcon";
 import { TaskContext } from "@/context/AllContext";
 import { TaskType } from "@/context/AllContextProvider";
+import DownloadIcon from "./icons/DownloadIcon";
 
 const TaskPopup = ({
   setShowPopup,
@@ -25,21 +26,31 @@ const TaskPopup = ({
     useContext(TaskContext);
 
   console.log({ taskSend: task });
-  function handleSubmit() {
-    const data = JSON.stringify(task);
-    fetch("http://localhost:8080/api/v1/user/signup", {
-      method: "POST",
-      body: data,
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((res) => {
-        console.log(res);
-        return res.json();
-      })
-      .then((data) => {
-        console.log({ data });
-      })
-      .catch((e) => console.log("Error while sending data", e));
+  async function handleSubmit() {
+    if (task.title.length <= 0 || task.status.length <= 0) {
+      // show error
+    }
+    const value = JSON.stringify(task);
+    try {
+      const res = await fetch("http://localhost:8080/api/v1/task/create", {
+        method: "POST",
+        body: value,
+        headers: { "Content-Type": "application/json" },
+      });
+
+      console.log(res);
+      if (res.ok) {
+        //show conformation popup
+        setShowPopup(false);
+      } else {
+        // show error popup
+      }
+
+      const data = await res.json();
+      console.log({ data });
+    } catch (e) {
+      console.log("Error", e);
+    }
   }
 
   return (
@@ -69,7 +80,7 @@ const TaskPopup = ({
                 onClick={handleSubmit}
               >
                 <span>Save</span>
-                <ShareIcon className="w-5 h-5" />
+                <DownloadIcon className="w-5 h-5" />
               </button>
               <div className=" flex gap-4 p-[0.45rem] rounded-md bg-[#F4F4F4] text-[0.9rem] text-[#797979]">
                 <span>Share</span>

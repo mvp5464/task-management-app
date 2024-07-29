@@ -12,12 +12,14 @@ import TeamsIcon from "./icons/TeamsIcon";
 import SideSection from "./SideSection";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import LoadingIcon from "./icons/LoadingIcon";
+import { useRouter } from "next/navigation";
 
 const SidebarComp = ({
   setShowPopup,
 }: {
   setShowPopup: Dispatch<SetStateAction<boolean>>;
 }) => {
+  const router = useRouter();
   return (
     <>
       <div className=" bg-white h-screen border-r1 p-3 flex flex-col justify-between ">
@@ -37,9 +39,15 @@ const SidebarComp = ({
               <LoadingIcon />
               <DoubleArrowIcon />
             </div>
-            <div className=" bg-[#F4F4F4] py-2 px-1 rounded-sm text-[#797979]">
-              <button>Logout</button>
-            </div>
+            <button
+              className=" bg-[#F4F4F4] py-2 px-1 rounded-sm text-[#797979]"
+              onClick={() => {
+                localStorage.removeItem("app-token");
+                router.push("/login");
+              }}
+            >
+              Logout
+            </button>
           </div>
           <div className=" flex flex-col gap-1 mb-2">
             <SideSection icon={<HomeIcon />} name={"Home"} />

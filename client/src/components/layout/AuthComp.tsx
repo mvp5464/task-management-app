@@ -20,16 +20,25 @@ const AuthComp = ({ role }: { role: "login" | "signup" }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
   function togglePasswordVisibility() {
     setIsPasswordVisible((prevState: any) => !prevState);
   }
+
+  // CREATE A SINGLE INPUT CHANGE
+
   async function handleSubmit(e: FormEvent<HTMLButtonElement>) {
     if (e) {
       e.preventDefault();
     }
     setErrorMessage("");
     setIsLoading(true);
-    // check if value are not empty else error
+
+    if (input.email.length <= 0 || input.password.length <= 0) {
+      setIsLoading(false);
+      setErrorMessage("Wrong input");
+      return;
+    }
     try {
       if (role === "login") {
         const res = await fetch("http://localhost:8080/api/v1/user/login", {
@@ -39,14 +48,19 @@ const AuthComp = ({ role }: { role: "login" | "signup" }) => {
         });
         const data = await res.json();
 
+        localStorage.setItem("app-token", data.msg);
         if (res.ok) {
           router.push("/dashboard");
+          return;
         } else {
           setErrorMessage(data.msg);
         }
-        window.localStorage.setItem("token", data.msg);
       }
-
+      if (input.fullName.length <= 0) {
+        setIsLoading(false);
+        setErrorMessage("Wrong input");
+        return;
+      }
       if (role === "signup") {
         const res = await fetch("http://localhost:8080/api/v1/user/signup", {
           method: "POST",
