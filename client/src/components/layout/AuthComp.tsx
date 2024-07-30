@@ -2,7 +2,7 @@
 import EyeIcon from "@/components/icons/EyeIcon";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 
 export interface SigningType {
   fullName: string;
@@ -25,20 +25,18 @@ const AuthComp = ({ role }: { role: "login" | "signup" }) => {
     setIsPasswordVisible((prevState: any) => !prevState);
   }
 
-  // CREATE A SINGLE INPUT CHANGE
+  const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setInput((val) => ({ ...val, [e.target.name]: e.target.value }));
+  };
 
   async function handleSubmit(e: FormEvent<HTMLButtonElement>) {
     if (e) {
       e.preventDefault();
     }
+    setIsPasswordVisible(false);
     setErrorMessage("");
     setIsLoading(true);
-    // WHY STATE IS SHOWING EMPTY BUT WHEN WRITE THEN IT SHOWS (ONCHANGE PROBLEM)
-    // if (input.email.length <= 0 || input.password.length <= 0) {
-    //   setIsLoading(false);
-    //   setErrorMessage("Wrong input");
-    //   return;
-    // }
+
     try {
       if (role === "login") {
         const res = await fetch(`http://localhost:8080/api/v1/user/login`, {
@@ -94,36 +92,27 @@ const AuthComp = ({ role }: { role: "login" | "signup" }) => {
             <input
               className=" py-3 px-2 rounded-lg bg-[#EBEBEB] placeholder-[#999999] focus:outline-[#999999] focus:outline "
               type="text"
+              value={input.fullName}
+              name="fullName"
               placeholder="Full name"
-              onChange={(e) =>
-                setInput((val: SigningType) => ({
-                  ...val,
-                  fullName: e.target.value,
-                }))
-              }
+              onChange={handleOnChange}
             />
           )}
           <input
             className=" py-3 px-2 rounded-lg bg-[#EBEBEB] placeholder-[#999999] focus:outline-[#999999] focus:outline "
             type="text"
+            value={input.email}
+            name="email"
             placeholder="Your email"
-            onChange={(e) =>
-              setInput((val: SigningType) => ({
-                ...val,
-                email: e.target.value,
-              }))
-            }
+            onChange={handleOnChange}
           />
           <input
             className=" py-3 px-2 rounded-lg bg-[#EBEBEB] placeholder-[#999999] focus:outline-[#999999] focus:outline "
             type={isPasswordVisible ? "text" : "password"}
+            value={input.password}
+            name="password"
             placeholder="Password"
-            onChange={(e) =>
-              setInput((val: SigningType) => ({
-                ...val,
-                password: e.target.value,
-              }))
-            }
+            onChange={handleOnChange}
           />
           <button
             className="absolute bottom-0 right-0 flex h-10 items-center px-4 text-gray-600"

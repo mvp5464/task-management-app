@@ -5,12 +5,12 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 export const userRoute = express.Router();
-type FullSignupType = Required<SignUpType>;
+type CompleteSignupType = Required<SignUpType>;
 const dotenv = require("dotenv").config();
 const myJwt = dotenv.parsed.JWT_SECRET;
 
 userRoute.post("/signup", async (req, res) => {
-  const body: FullSignupType = await req.body;
+  const body: CompleteSignupType = await req.body;
   try {
     const { success, error } = signUpZod.safeParse(body);
 
@@ -18,7 +18,7 @@ userRoute.post("/signup", async (req, res) => {
       return res.status(402).json({ msg: error?.errors[0].message });
     }
 
-    const findUser = await UserModel.findOne({
+    const findUser: CompleteSignupType | null = await UserModel.findOne({
       email: body.email,
     });
 
@@ -28,7 +28,7 @@ userRoute.post("/signup", async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(body.password, 10);
 
-    const createUser: FullSignupType = await UserModel.create({
+    const createUser: CompleteSignupType = await UserModel.create({
       fullName: body.fullName,
       email: body.email,
       password: hashedPassword,
@@ -56,12 +56,12 @@ userRoute.post("/login", async (req, res) => {
       return res.status(402).json({ msg: error?.errors[0].message });
     }
 
-    const findUser: FullSignupType | null = await UserModel.findOne({
+    const findUser: CompleteSignupType | null = await UserModel.findOne({
       email: body.email,
     });
 
     if (!findUser) {
-      return res.status(403).json({ msg: "Email is incorrect" });
+      return res.status(403).json({ msg: "Invalid email address" });
     }
 
     const passwordValidation = await bcrypt.compare(

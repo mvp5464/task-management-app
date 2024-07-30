@@ -9,6 +9,7 @@ import { TaskModel } from "../config/db";
 import { authMiddleware } from "../config/middleware";
 
 export const taskRoute = express.Router();
+type CompleteTaskType = Required<TaskType>;
 
 taskRoute.post("/create-task", authMiddleware, async (req, res) => {
   const body: TaskType = await req.body;
@@ -39,7 +40,7 @@ taskRoute.post("/create-task", authMiddleware, async (req, res) => {
 taskRoute.get("/get-task", authMiddleware, async (req, res) => {
   try {
     const userId = res.locals.userId;
-    const allTasks = await TaskModel.find({ userId });
+    const allTasks: CompleteTaskType[] = await TaskModel.find({ userId });
     return res.status(200).json({ msg: allTasks });
   } catch (e) {
     console.log("Error:", e);
@@ -72,7 +73,7 @@ taskRoute.delete("/delete-task", authMiddleware, async (req, res) => {
 });
 
 taskRoute.put("/update-task", authMiddleware, async (req, res) => {
-  const body: TaskType = await req.body;
+  const body: CompleteTaskType = await req.body;
 
   try {
     const { success, error } = TaskZod.safeParse(body);

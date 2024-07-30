@@ -9,6 +9,7 @@ export interface TaskType {
   status: "To do" | "In progress" | "Under review" | "Finished" | "";
   priority?: "Low" | "Medium" | "Urgent" | "";
   deadline?: string;
+  createdAt?: Date;
 }
 
 export type StatusType =

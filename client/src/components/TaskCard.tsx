@@ -2,6 +2,7 @@ import { TaskType } from "@/context/AllContextProvider";
 import TimeIcon from "./icons/TimeIcon";
 import { DragEvent, useContext } from "react";
 import { PopupContext, TaskContext } from "@/context/AllContext";
+import { timePassedFunction } from "@/lib/utils";
 
 const TaskCard = ({ taskCard }: { taskCard?: TaskType[] }) => {
   const { setShowPopup } = useContext(PopupContext);
@@ -61,7 +62,9 @@ const TaskCard = ({ taskCard }: { taskCard?: TaskType[] }) => {
                 {task.deadline?.toString()}
               </span>
             </div>
-            <div className="text-[#797979] text-xs ">{"1 hr ago"}</div>
+            <div className="text-[#797979] text-xs ">
+              {timePassedFunction(task.createdAt!)}
+            </div>
           </div>
         );
       })}

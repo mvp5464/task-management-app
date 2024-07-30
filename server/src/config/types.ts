@@ -14,7 +14,7 @@ export const signInZod = z.object({
 });
 
 export const TaskZod = z.object({
-  _id: z.string(),
+  _id: z.string().optional(),
   userId: z.string().optional(),
   title: z.string().min(1, "The title field is required."),
   description: z.string().optional(),

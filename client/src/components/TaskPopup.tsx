@@ -30,9 +30,6 @@ const TaskPopup = ({
     useContext(TaskContext);
 
   async function handleSubmit() {
-    if (task.title.length <= 0 || task.status.length <= 0) {
-      toast.error("Title and Status field are required");
-    }
     const value = JSON.stringify(task);
     const authorization = localStorage.getItem("app-token")!;
     try {
