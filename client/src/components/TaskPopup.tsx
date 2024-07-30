@@ -1,5 +1,5 @@
 "use client";
-import { Dispatch, SetStateAction, useContext } from "react";
+import { Dispatch, SetStateAction, useContext, useState } from "react";
 import PopupSection from "./PopupSection";
 import CrossIcon from "./icons/CrossIcon";
 import TwoSideArrowIcon from "./icons/TwoSideArrowIcon";
@@ -14,7 +14,7 @@ import { PopupContext, TaskContext } from "@/context/AllContext";
 import { TaskType } from "@/context/AllContextProvider";
 import DownloadIcon from "./icons/DownloadIcon";
 import { TrashIcon } from "@radix-ui/react-icons";
-import toast from "react-hot-toast";
+import toast, { LoaderIcon } from "react-hot-toast";
 
 const TaskPopup = ({
   fetchingTasks,
@@ -22,6 +22,8 @@ const TaskPopup = ({
   fetchingTasks: () => Promise<void>;
 }) => {
   const { setShowPopup } = useContext(PopupContext);
+  const [saveLoading, setSaveLoading] = useState<boolean>(false);
+  const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
 
   const {
     task,
@@ -32,6 +34,7 @@ const TaskPopup = ({
   async function handleSubmit() {
     const value = JSON.stringify(task);
     const authorization = localStorage.getItem("app-token")!;
+    setSaveLoading(true);
     try {
       const res = await fetch(
         `http://localhost:8080/api/v1/task/${
@@ -65,10 +68,12 @@ const TaskPopup = ({
       console.log("Error", e);
       toast.error("Error while completing opration");
     }
+    setSaveLoading(false);
   }
 
   async function handleDelete() {
     const authorization = localStorage.getItem("app-token")!;
+    setDeleteLoading(true);
     try {
       const res = await fetch(`http://localhost:8080/api/v1/task/delete-task`, {
         method: "DELETE",
@@ -98,6 +103,7 @@ const TaskPopup = ({
       console.log("Error while deleting Task:", e);
       toast.error("Error while deleting Task");
     }
+    setDeleteLoading(false);
   }
 
   return (
@@ -161,7 +167,7 @@ const TaskPopup = ({
               }
             />
           </div>
-          {/* {JSON.stringify(task)} */}
+
           <div>
             <PopupSection logo={<LoadingIcon />} title={"Status"} />
             <PopupSection logo={<DangerIcon />} title={"Priority"} />
@@ -180,18 +186,28 @@ const TaskPopup = ({
           <div className=" flex justify-center gap-10">
             <button
               className=" flex gap-4 p-[0.45rem] rounded-md bg-[#F4F4F4] text-[0.9rem] text-[#797979]"
+              disabled={saveLoading || deleteLoading}
               onClick={handleSubmit}
             >
               {task._id ? <span>Update</span> : <span>Save</span>}
-              <DownloadIcon className="w-5 h-5" />
+              {saveLoading ? (
+                <LoaderIcon />
+              ) : (
+                <DownloadIcon className="w-5 h-5" />
+              )}
             </button>
             {task._id && (
               <button
                 className=" flex gap-4 p-[0.45rem] rounded-md bg-[#F4F4F4] text-[0.9rem] text-[#797979]"
+                disabled={saveLoading || deleteLoading}
                 onClick={handleDelete}
               >
                 <span>Delete</span>
-                <TrashIcon className="w-5 h-5" />
+                {deleteLoading ? (
+                  <LoaderIcon />
+                ) : (
+                  <TrashIcon className="w-5 h-5" />
+                )}
               </button>
             )}
           </div>

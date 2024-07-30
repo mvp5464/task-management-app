@@ -27,11 +27,11 @@ export const timePassedFunction = (dateValue: Date | string) => {
   if (sec === 0) {
     return `1 second ago`;
   } else if (sec < 60) {
-    return `${sec} second${sec === 1 ? "" : "s"} ago`;
+    return `${sec} sec ago`;
   } else if (min < 60) {
-    return `${min} minute${min === 1 ? "" : "s"} ago`;
+    return `${min} min ago`;
   } else if (hr < 24) {
-    return `${hr} hour${hr === 1 ? "" : "s"} ago`;
+    return `${hr} hr ago`;
   } else {
     return `${day} day${day === 1 ? "" : "s"} ago`;
   }

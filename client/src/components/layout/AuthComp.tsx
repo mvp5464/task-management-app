@@ -3,6 +3,7 @@ import EyeIcon from "@/components/icons/EyeIcon";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";
+import { LoaderIcon } from "react-hot-toast";
 
 export interface SigningType {
   fullName: string;
@@ -123,12 +124,12 @@ const AuthComp = ({ role }: { role: "login" | "signup" }) => {
         </div>
         <div className=" flex flex-col gap-4 w-full mb-5">
           <button
-            className=" text-white py-3 rounded-lg bg-gradient-to-b from-[#8c80ce] to-[#7066b0] "
+            className=" flex gap-4 justify-center items-center text-white py-3 rounded-lg bg-gradient-to-b from-[#8c80ce] to-[#7066b0] "
             disabled={isLoading}
             onClick={handleSubmit}
           >
-            {role === "signup" ? "Sign up" : "Login"}
-            {isLoading && "..."}
+            <span>{role === "signup" ? "Sign up" : "Login"}</span>
+            {isLoading && <LoaderIcon />}
           </button>
         </div>
         {role === "signup" ? (
