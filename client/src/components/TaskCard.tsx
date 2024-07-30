@@ -15,6 +15,7 @@ const TaskCard = ({ taskCard }: { taskCard?: TaskType[] }) => {
             className=" border p-3 rounded-lg bg-[#F9F9F9] mb-4 cursor-pointer"
             onClick={() => {
               setTask({
+                _id: task._id,
                 title: task.title,
                 description: task.description,
                 priority: task.priority,
@@ -32,16 +33,21 @@ const TaskCard = ({ taskCard }: { taskCard?: TaskType[] }) => {
             </div>
             <div className=" text-white text-xs mb-4">
               <span
-                className={`${task.priority === "Low" && "bg-[#0ECC5A]"}   
+                className={` ${!task.priority && " hidden"} 
+                ${task.priority === "Low" && "bg-[#0ECC5A]"}   
                 ${task.priority === "Medium" && "bg-[#FFA235]"}
                 ${task.priority === "Urgent" && "bg-[#FF6B6B]"}
-                ${task.priority === "" && "bg-[#ffffff]"}
+                
                 rounded-md p-[0.30rem]`}
               >
                 {task.priority}
               </span>
             </div>
-            <div className="flex gap-2 mb-3 items-center">
+            <div
+              className={`flex gap-2 mb-3 items-center ${
+                !task.deadline && "hidden"
+              }`}
+            >
               <TimeIcon />
               <span className="text-[#606060] text-xs font-bold">
                 {task.deadline?.toString()}

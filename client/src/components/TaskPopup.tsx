@@ -13,6 +13,7 @@ import LoadingIcon from "./icons/LoadingIcon";
 import { PopupContext, TaskContext } from "@/context/AllContext";
 import { TaskType } from "@/context/AllContextProvider";
 import DownloadIcon from "./icons/DownloadIcon";
+import { TrashIcon } from "@radix-ui/react-icons";
 
 const TaskPopup = ({
   fetchingTasks,
@@ -33,11 +34,16 @@ const TaskPopup = ({
     }
     const value = JSON.stringify(task);
     try {
-      const res = await fetch("http://localhost:8080/api/v1/task/create", {
-        method: "POST",
-        body: value,
-        headers: { "Content-Type": "application/json" },
-      });
+      const res = await fetch(
+        `http://localhost:8080/api/v1/task/${
+          task._id ? "update-task" : "create"
+        }`,
+        {
+          method: `${task._id ? "PUT" : "POST"}`,
+          body: value,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
 
       if (res.ok) {
         //show conformation TOSTER
@@ -55,10 +61,35 @@ const TaskPopup = ({
         // show error TOSTER
       }
 
-      const data = await res.json();
-      console.log({ data });
+      // const data = await res.json();
+      // console.log({ data });
     } catch (e) {
       console.log("Error", e);
+    }
+  }
+
+  async function handleDelete() {
+    try {
+      const res = await fetch(`http://localhost:8080/api/v1/task/delete-task`, {
+        method: "DELETE",
+        body: JSON.stringify({ _id: task._id }),
+        headers: { "Content-Type": "application/json" },
+      });
+      console.log({ res });
+      const data = await res.json();
+      console.log({ data });
+      fetchingTasks();
+      setTask({
+        title: "",
+        description: "",
+        deadline: "",
+        status: "",
+        priority: "",
+      });
+
+      setShowPopup(false);
+    } catch (e) {
+      console.log("Error while deleting Task:", e);
     }
   }
 
@@ -102,13 +133,6 @@ const TaskPopup = ({
               </button>
             </div>
             <div className=" flex gap-4">
-              <button
-                className=" flex gap-4 p-[0.45rem] rounded-md bg-[#F4F4F4] text-[0.9rem] text-[#797979]"
-                onClick={handleSubmit}
-              >
-                <span>Save</span>
-                <DownloadIcon className="w-5 h-5" />
-              </button>
               <div className=" flex gap-4 p-[0.45rem] rounded-md bg-[#F4F4F4] text-[0.9rem] text-[#797979]">
                 <span>Share</span>
                 <ShareIcon className="w-5 h-5" />
@@ -130,7 +154,7 @@ const TaskPopup = ({
               }
             />
           </div>
-          {JSON.stringify(task.status)}
+          {JSON.stringify(task)}
           <div>
             <PopupSection logo={<LoadingIcon />} title={"Status"} />
             <PopupSection logo={<DangerIcon />} title={"Priority"} />
@@ -144,8 +168,26 @@ const TaskPopup = ({
           <input
             type="text"
             placeholder="Start writing, or drag your own files here."
-            className="w-full placeholder:text-sm text-[#666666] py-2"
+            className="w-full placeholder:text-sm text-[#666666] py-2 mb-10"
           />
+          <div className=" flex justify-center gap-10">
+            <button
+              className=" flex gap-4 p-[0.45rem] rounded-md bg-[#F4F4F4] text-[0.9rem] text-[#797979]"
+              onClick={handleSubmit}
+            >
+              {task._id ? <span>Update</span> : <span>Save</span>}
+              <DownloadIcon className="w-5 h-5" />
+            </button>
+            {task._id && (
+              <button
+                className=" flex gap-4 p-[0.45rem] rounded-md bg-[#F4F4F4] text-[0.9rem] text-[#797979]"
+                onClick={handleDelete}
+              >
+                <span>Delete</span>
+                <TrashIcon className="w-5 h-5" />
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>

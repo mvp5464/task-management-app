@@ -54,7 +54,7 @@ const DashBoardComp = () => {
   }, [tasks]);
   const fetchingTasks = async () => {
     try {
-      const res = await fetch("http://localhost:8080/api/v1/task/get-task");
+      const res = await fetch(`http://localhost:8080/api/v1/task/get-task`);
       const data = await res.json();
       setTasks(data.msg);
     } catch (e) {

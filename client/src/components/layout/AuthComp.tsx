@@ -41,7 +41,7 @@ const AuthComp = ({ role }: { role: "login" | "signup" }) => {
     // }
     try {
       if (role === "login") {
-        const res = await fetch("http://localhost:8080/api/v1/user/login", {
+        const res = await fetch(`http://localhost:8080/api/v1/user/login`, {
           method: "POST",
           body: JSON.stringify(input),
           headers: { "Content-Type": "application/json" },
@@ -62,7 +62,7 @@ const AuthComp = ({ role }: { role: "login" | "signup" }) => {
         return;
       }
       if (role === "signup") {
-        const res = await fetch("http://localhost:8080/api/v1/user/signup", {
+        const res = await fetch(`http://localhost:8080/api/v1/user/signup`, {
           method: "POST",
           body: JSON.stringify(input),
           headers: { "Content-Type": "application/json" },
