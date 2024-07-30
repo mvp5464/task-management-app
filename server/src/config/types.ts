@@ -16,7 +16,7 @@ export const TaskZod = z.object({
   description: z.string().optional(),
   status: z.string(),
   priority: z.enum(["Low", "Medium", "Urgent", "null"]).optional(),
-  deadline: z.date().nullable().optional(),
+  deadline: z.string().optional(),
 });
 
 export type SignUpType = z.infer<typeof signUpZod>;

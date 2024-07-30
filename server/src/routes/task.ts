@@ -7,9 +7,6 @@ export const taskRoute = express.Router();
 taskRoute.post("/create", async (req, res) => {
   const body: TaskType = await req.body;
 
-  const date = new Date(body.deadline as unknown as string);
-  body.deadline = date;
-
   try {
     const { success } = TaskZod.safeParse(body);
     if (!success) {
@@ -35,7 +32,6 @@ taskRoute.post("/create", async (req, res) => {
 taskRoute.get("/get-task", async (req, res) => {
   try {
     const allTasks = await TaskModel.find();
-    console.log({ allTasks });
     return res.status(200).json({ msg: allTasks });
   } catch (e) {
     console.log("Error:", e);

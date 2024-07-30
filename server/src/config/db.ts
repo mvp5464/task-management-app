@@ -35,7 +35,7 @@ const taskSchema = new Schema(
       required: [true, "Please provide a fullName"],
     },
     priority: String,
-    deadline: Date,
+    deadline: String,
   },
   {
     timestamps: true,

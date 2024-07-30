@@ -1,7 +1,42 @@
-import { createContext } from "react";
+import { createContext, Dispatch, SetStateAction } from "react";
+import { TaskType, UserType } from "./AllContextProvider";
 
-export const UserContext = createContext<any>(null);
+interface PopupContextType {
+  showPopup: boolean;
+  setShowPopup: Dispatch<SetStateAction<boolean>>;
+}
 
-export const TaskContext = createContext<any>(null);
+interface TaskContextType {
+  task: TaskType;
+  setTask: Dispatch<SetStateAction<TaskType>>;
+}
 
-export const PopupContext = createContext<any>(null); // ADD PROVER VALUE HERE FOR TYPE CHECKING
+interface UserContextType {
+  user: UserType;
+  setUser: Dispatch<SetStateAction<UserType>>;
+}
+
+export const UserContext = createContext<UserContextType>({
+  user: {
+    fullName: "",
+    email: "",
+    password: "",
+  },
+  setUser: () => {},
+});
+
+export const TaskContext = createContext<TaskContextType>({
+  task: {
+    title: "",
+    description: "",
+    status: "",
+    priority: "",
+    deadline: "",
+  },
+  setTask: () => {},
+});
+
+export const PopupContext = createContext<PopupContextType>({
+  showPopup: false,
+  setShowPopup: () => {},
+});

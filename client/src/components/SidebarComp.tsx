@@ -1,5 +1,5 @@
 "use client";
-import { Dispatch, SetStateAction, useContext } from "react";
+import { useContext } from "react";
 import AnalyticsIcon from "./icons/AnalyticsIcon";
 import BellIcon from "./icons/BellIcon";
 import BoardsIcon from "./icons/BoardsIcon";
@@ -22,7 +22,7 @@ const SidebarComp = ({}: {}) => {
 
   return (
     <>
-      <div className=" bg-white h-screen border-r1 p-3 flex flex-col justify-between ">
+      <div className=" bg-white h-screen sticky inset-0 border-r1 p-3 flex flex-col justify-between ">
         <div>
           <div className="flex gap-2 items-center my-2">
             <Avatar className="h-8 w-8">
@@ -36,7 +36,7 @@ const SidebarComp = ({}: {}) => {
           <div className=" flex justify-between items-center mb-2">
             <div className=" flex gap-4">
               <BellIcon />
-              <LoadingIcon />
+              <LoadingIcon notification={true} />
               <DoubleArrowIcon />
             </div>
             <button
@@ -59,7 +59,7 @@ const SidebarComp = ({}: {}) => {
           <div className="bg-gradient-to-b  from-[#4B36CC] to-[#9C93D4] rounded-lg">
             <button
               className=" bg-gradient-to-b from-[#4C38C2] to-[#2F2188] w-full text-white font- text-lg rounded-lg flex gap-2 py-3 justify-center items-center"
-              onClick={() => setShowPopup({ popup: true, status: "" })}
+              onClick={() => setShowPopup(true)}
             >
               <span>Create new task&nbsp;</span>
               <PlusCircleIcon />

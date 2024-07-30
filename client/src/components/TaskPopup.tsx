@@ -13,7 +13,6 @@ import LoadingIcon from "./icons/LoadingIcon";
 import { PopupContext, TaskContext } from "@/context/AllContext";
 import { TaskType } from "@/context/AllContextProvider";
 import DownloadIcon from "./icons/DownloadIcon";
-// import { StatusType } from "./layout/DashBoardComp";
 
 const TaskPopup = ({
   fetchingTasks,
@@ -28,7 +27,6 @@ const TaskPopup = ({
   }: { task: TaskType; setTask: Dispatch<SetStateAction<TaskType>> } =
     useContext(TaskContext);
 
-  console.log({ taskSend: task });
   async function handleSubmit() {
     if (task.title.length <= 0 || task.status.length <= 0) {
       // show error
@@ -41,11 +39,18 @@ const TaskPopup = ({
         headers: { "Content-Type": "application/json" },
       });
 
-      console.log(res);
       if (res.ok) {
         //show conformation TOSTER
         fetchingTasks();
-        setShowPopup({ popup: false, status: "" });
+        setTask({
+          title: "",
+          description: "",
+          deadline: "",
+          status: "",
+          priority: "",
+        });
+
+        setShowPopup(false);
       } else {
         // show error TOSTER
       }
@@ -61,7 +66,14 @@ const TaskPopup = ({
     <div
       className=" fixed inset-0 bg-black/60 flex justify-center h-screen  items-center"
       onClick={() => {
-        setShowPopup({ popup: false, status: "" });
+        setShowPopup(false);
+        setTask({
+          title: "",
+          description: "",
+          deadline: "",
+          status: "",
+          priority: "",
+        });
       }}
     >
       <div
@@ -72,7 +84,16 @@ const TaskPopup = ({
           <div className=" flex justify-between items-center mb-6">
             <div className=" flex items-center gap-3">
               <button
-                onClick={() => setShowPopup({ popup: false, status: "" })}
+                onClick={() => {
+                  setShowPopup(false);
+                  setTask({
+                    title: "",
+                    description: "",
+                    deadline: "",
+                    status: "",
+                    priority: "",
+                  });
+                }}
               >
                 <CrossIcon />
               </button>
@@ -103,11 +124,13 @@ const TaskPopup = ({
               type="text"
               placeholder="Title"
               className="w-full h-14 font-semibold text-[2.7rem] text-[#303030] placeholder:text-[#CCCCCC]"
+              value={task.title}
               onChange={(e) =>
                 setTask((val: any) => ({ ...val, title: e.target.value }))
               }
             />
           </div>
+          {JSON.stringify(task.status)}
           <div>
             <PopupSection logo={<LoadingIcon />} title={"Status"} />
             <PopupSection logo={<DangerIcon />} title={"Priority"} />

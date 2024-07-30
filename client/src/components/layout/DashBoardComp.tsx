@@ -12,7 +12,7 @@ import TabSection from "../TabSection";
 import IntroducingImg from "../icons/IntroducingImg";
 import ShareImg from "../icons/ShareImg";
 import AccessImg from "../icons/AccessImg";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import TaskPopup from "../TaskPopup";
 import { TaskType } from "@/context/AllContextProvider";
 import { PopupContext } from "@/context/AllContext";
@@ -68,7 +68,9 @@ const DashBoardComp = () => {
   return (
     <>
       <div className=" grid grid-cols-[1fr,4fr] w-full">
-        <SidebarComp />
+        <div>
+          <SidebarComp />
+        </div>
         <div className=" bg-[#F4F4F4] border-l-2">
           <div className=" m-3 mt-5 mr-5 bg-white">
             <div className=" flex justify-between">
@@ -120,7 +122,7 @@ const DashBoardComp = () => {
                 </div>
                 <button
                   className=" bg-gradient-to-b from-[#4C38C2] to-[#2F2188] px-2 py-1 text-white font- text-[0.9rem] rounded-lg flex gap-2 justify-center items-center"
-                  onClick={() => setShowPopup({ popup: true, status: "" })}
+                  onClick={() => setShowPopup(true)}
                 >
                   <span>Create new&nbsp;</span>
                   <PlusCircleIcon />
@@ -149,7 +151,7 @@ const DashBoardComp = () => {
         </div>
       </div>
 
-      {showPopup.popup && (
+      {showPopup && (
         <div className=" ">
           <TaskPopup fetchingTasks={fetchingTasks} />
         </div>

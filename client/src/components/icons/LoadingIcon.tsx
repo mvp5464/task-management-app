@@ -1,6 +1,8 @@
 export default function LoadingIcon({
+  notification = false,
   className = "w-6 h-6",
 }: {
+  notification?: boolean;
   className?: string;
 }) {
   return (
@@ -66,6 +68,12 @@ export default function LoadingIcon({
         strokeLinecap="round"
         strokeLinejoin="round"
       />
+      {notification && (
+        <path
+          d="M19.5 9C21.9854 9 24 6.98527 24 4.5C24 2.01472 21.9854 0 19.5 0C17.0146 0 15 2.01472 15 4.5C15 6.98527 17.0146 9 19.5 9Z"
+          fill="#FFB800"
+        />
+      )}
     </svg>
   );
 }

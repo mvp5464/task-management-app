@@ -13,8 +13,8 @@ export interface TaskType {
   title: string;
   description?: string;
   status: "To do" | "In progress" | "Under review" | "Finished" | "";
-  priority?: "Low" | "Medium" | "Urgent" | "null";
-  deadline?: Date | null;
+  priority?: "Low" | "Medium" | "Urgent" | "";
+  deadline?: string;
 }
 
 export type StatusType =
@@ -43,8 +43,8 @@ export const TaskContextProvider = ({ children }: { children: ReactNode }) => {
     title: "",
     description: "",
     status: "",
-    priority: "null",
-    deadline: null,
+    priority: "",
+    deadline: "",
   });
 
   return (
@@ -55,10 +55,7 @@ export const TaskContextProvider = ({ children }: { children: ReactNode }) => {
 };
 
 export const PopupContextProvider = ({ children }: { children: ReactNode }) => {
-  const [showPopup, setShowPopup] = useState<{
-    popup: boolean;
-    status: StatusType;
-  }>({ popup: false, status: "" });
+  const [showPopup, setShowPopup] = useState<boolean>(false);
 
   return (
     <PopupContext.Provider value={{ showPopup, setShowPopup }}>

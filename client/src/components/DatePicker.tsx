@@ -1,7 +1,6 @@
 "use client";
 
-import { format } from "date-fns";
-import { cn } from "@/lib/utils";
+import { cn, dateFormatFunction } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -9,25 +8,18 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
-import { TaskType } from "@/context/AllContextProvider";
+import { useContext, useEffect, useState } from "react";
 import { TaskContext } from "@/context/AllContext";
 
 export function DatePickerDemo() {
   const [date, setDate] = useState<Date>();
-  console.log({ date });
 
-  const { setTask }: { setTask: Dispatch<SetStateAction<TaskType>> } =
-    useContext(TaskContext);
+  const { task, setTask } = useContext(TaskContext);
 
   useEffect(() => {
-    date && setTask((v) => ({ ...v, deadline: date }));
+    if (date) {
+      setTask((v) => ({ ...v, deadline: dateFormatFunction(date) }));
+    }
   }, [date]);
 
   return (
@@ -41,9 +33,11 @@ export function DatePickerDemo() {
           )}
         >
           {date ? (
-            format(date, "PPP")
+            dateFormatFunction(date)
+          ) : task.deadline ? (
+            <span className="text-black ">{task.deadline}</span>
           ) : (
-            <span className="text-gray-200 ">Not selected</span>
+            <span className="text-[#C1BDBD] ">Not selected</span>
           )}
         </Button>
       </PopoverTrigger>

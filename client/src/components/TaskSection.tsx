@@ -1,11 +1,10 @@
 "use client";
-import { Dispatch, SetStateAction, useContext } from "react";
+import { useContext } from "react";
 import LinesIcon from "./icons/LinesIcon";
 import PlusIcon from "./icons/PlusIcon";
 import TaskCard from "./TaskCard";
 import { StatusType, TaskType } from "@/context/AllContextProvider";
-import { PopupContext } from "@/context/AllContext";
-// import { StatusType } from "./layout/DashBoardComp";
+import { PopupContext, TaskContext } from "@/context/AllContext";
 
 const TaskSection = ({
   status,
@@ -15,6 +14,7 @@ const TaskSection = ({
   taskCard?: TaskType[];
 }) => {
   const { setShowPopup } = useContext(PopupContext);
+  const { setTask } = useContext(TaskContext);
 
   return (
     <>
@@ -29,7 +29,8 @@ const TaskSection = ({
         <button
           className=" flex justify-between items-center w-full bg-gradient-to-b from-[#3A3A3A] to-[#202020] text-white p-2 rounded-lg"
           onClick={() => {
-            setShowPopup({ popup: true, status: status });
+            setShowPopup(true);
+            setTask((val) => ({ ...val, status: status }));
           }}
         >
           <span className="text-sm ">Add new</span>
