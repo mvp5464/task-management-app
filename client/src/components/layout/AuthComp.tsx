@@ -76,6 +76,7 @@ const AuthComp = ({ role }: { role: "login" | "signup" }) => {
       setIsLoading(false);
     } catch (e) {
       console.log("Error:", e);
+      setErrorMessage("Error connecting Database");
       setIsLoading(false);
     }
   }

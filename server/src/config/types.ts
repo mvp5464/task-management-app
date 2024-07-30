@@ -1,18 +1,20 @@
 import { z } from "zod";
 
 export const signUpZod = z.object({
+  _id: z.string().optional(),
   fullName: z.string().min(1, "The name field is required."),
   email: z.string().email("Please enter a valid email address."),
   password: z.string().min(6, "Password must be at least 6 characters long."),
 });
 
 export const signInZod = z.object({
+  _id: z.string().optional(),
   email: z.string().email("Please enter a valid email address."),
   password: z.string().min(6, "Password must be at least 6 characters long."),
 });
 
 export const TaskZod = z.object({
-  _id: z.string().optional(),
+  _id: z.string(),
   userId: z.string().optional(),
   title: z.string().min(1, "The title field is required."),
   description: z.string().optional(),

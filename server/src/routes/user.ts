@@ -2,14 +2,15 @@ import express from "express";
 import { SignInType, signInZod, SignUpType, signUpZod } from "../config/types";
 import { UserModel } from "../config/db";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 export const userRoute = express.Router();
-
+type FullSignupType = Required<SignUpType>;
 const dotenv = require("dotenv").config();
 const myJwt = dotenv.parsed.JWT_SECRET;
 
 userRoute.post("/signup", async (req, res) => {
-  const body: SignUpType = await req.body;
+  const body: FullSignupType = await req.body;
   try {
     const { success, error } = signUpZod.safeParse(body);
 
@@ -24,12 +25,13 @@ userRoute.post("/signup", async (req, res) => {
     if (findUser) {
       return res.status(402).json({ msg: "User already exists" });
     }
-    // encrypt the password here
 
-    const createUser = await UserModel.create({
+    const hashedPassword = await bcrypt.hash(body.password, 10);
+
+    const createUser: FullSignupType = await UserModel.create({
       fullName: body.fullName,
       email: body.email,
-      password: body.password,
+      password: hashedPassword,
     });
 
     const token = jwt.sign(createUser._id.toString(), myJwt);
@@ -53,15 +55,22 @@ userRoute.post("/login", async (req, res) => {
     if (!success) {
       return res.status(402).json({ msg: error?.errors[0].message });
     }
-    // encrypt incoming password
 
-    const findUser = await UserModel.findOne({
+    const findUser: FullSignupType | null = await UserModel.findOne({
       email: body.email,
-      password: body.password,
     });
 
     if (!findUser) {
-      return res.status(403).json({ msg: "Wrong email or password" });
+      return res.status(403).json({ msg: "Email is incorrect" });
+    }
+
+    const passwordValidation = await bcrypt.compare(
+      body.password,
+      findUser.password
+    );
+
+    if (!passwordValidation) {
+      return res.status(403).json({ msg: "Password is incorrect" });
     }
 
     const token = jwt.sign(findUser._id.toString(), myJwt);
