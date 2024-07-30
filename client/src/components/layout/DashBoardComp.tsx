@@ -12,9 +12,9 @@ import TabSection from "../TabSection";
 import IntroducingImg from "../icons/IntroducingImg";
 import ShareImg from "../icons/ShareImg";
 import AccessImg from "../icons/AccessImg";
-import { useContext, useEffect, useState } from "react";
+import { DragEvent, useContext, useEffect, useState } from "react";
 import TaskPopup from "../TaskPopup";
-import { TaskType } from "@/context/AllContextProvider";
+import { StatusType, TaskType } from "@/context/AllContextProvider";
 import { PopupContext } from "@/context/AllContext";
 import SearchIcon from "../icons/SearchIcon";
 import { useRouter } from "next/navigation";
@@ -38,6 +38,54 @@ const DashBoardComp = () => {
   });
   const router = useRouter();
 
+  const fetchingTasks = async () => {
+    const authorization = localStorage.getItem("app-token")!;
+    try {
+      const res = await fetch(`http://localhost:8080/api/v1/task/get-task`, {
+        headers: { authorization },
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setTasks(data.msg);
+      }
+      if (data.msg === "No JWT provided") {
+        router.push("/login");
+      }
+    } catch (e) {
+      console.log("Error while fetching data ", e);
+    }
+  };
+
+  async function handleOnDrop(e: DragEvent, status: StatusType) {
+    const movingTask = e.dataTransfer.getData("movingTask");
+    const movedTask: TaskType = JSON.parse(movingTask);
+
+    if (movedTask.status === status) {
+      return;
+    }
+    movedTask.status = status;
+
+    const value = JSON.stringify(movedTask);
+    const authorization = localStorage.getItem("app-token")!;
+    try {
+      const res = await fetch("http://localhost:8080/api/v1/task/update-task", {
+        method: "PUT",
+        body: value,
+        headers: { "Content-Type": "application/json", authorization },
+      });
+
+      if (res.ok) {
+        fetchingTasks();
+      }
+    } catch (e) {
+      console.log("Error", e);
+    }
+  }
+
+  function handleDragOver(e: DragEvent) {
+    e.preventDefault();
+  }
+
   useEffect(() => {
     const categorized: CategorizedTask = {
       "To do": [],
@@ -56,28 +104,9 @@ const DashBoardComp = () => {
 
     setCategorizedTasks(categorized);
   }, [tasks]);
-  const fetchingTasks = async () => {
-    const authorization = localStorage.getItem("app-token")!;
-    try {
-      const res = await fetch(`http://localhost:8080/api/v1/task/get-task`, {
-        headers: { authorization },
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setTasks(data.msg);
-      }
-      if (data.msg === "No JWT provided") {
-        router.push("/login");
-      }
-    } catch (e) {
-      console.log("Error while fetching data ", e);
-    }
-  };
-  useEffect(() => {
-    fetchingTasks();
-  }, []);
 
   useEffect(() => {
+    fetchingTasks();
     setUser(localStorage.getItem("app-name")!);
   }, []);
 
@@ -149,22 +178,42 @@ const DashBoardComp = () => {
               </div>
             </div>
             <div className=" grid grid-cols-4 gap-5 px-4">
-              <TaskSection
-                taskCard={categorizedTasks["To do"]}
-                status={"To do"}
-              />
-              <TaskSection
-                taskCard={categorizedTasks["In progress"]}
-                status={"In progress"}
-              />
-              <TaskSection
-                taskCard={categorizedTasks["Under review"]}
-                status={"Under review"}
-              />
-              <TaskSection
-                taskCard={categorizedTasks["Finished"]}
-                status={"Finished"}
-              />
+              <div
+                onDrop={(e) => handleOnDrop(e, "To do")}
+                onDragOver={handleDragOver}
+              >
+                <TaskSection
+                  taskCard={categorizedTasks["To do"]}
+                  status={"To do"}
+                />
+              </div>
+              <div
+                onDrop={(e) => handleOnDrop(e, "In progress")}
+                onDragOver={handleDragOver}
+              >
+                <TaskSection
+                  taskCard={categorizedTasks["In progress"]}
+                  status={"In progress"}
+                />
+              </div>
+              <div
+                onDrop={(e) => handleOnDrop(e, "Under review")}
+                onDragOver={handleDragOver}
+              >
+                <TaskSection
+                  taskCard={categorizedTasks["Under review"]}
+                  status={"Under review"}
+                />
+              </div>
+              <div
+                onDrop={(e) => handleOnDrop(e, "Finished")}
+                onDragOver={handleDragOver}
+              >
+                <TaskSection
+                  taskCard={categorizedTasks["Finished"]}
+                  status={"Finished"}
+                />
+              </div>
             </div>
           </div>
         </div>

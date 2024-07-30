@@ -1,11 +1,17 @@
 import { TaskType } from "@/context/AllContextProvider";
 import TimeIcon from "./icons/TimeIcon";
-import { useContext } from "react";
+import { DragEvent, useContext } from "react";
 import { PopupContext, TaskContext } from "@/context/AllContext";
 
 const TaskCard = ({ taskCard }: { taskCard?: TaskType[] }) => {
   const { setShowPopup } = useContext(PopupContext);
   const { setTask } = useContext(TaskContext);
+
+  function handleOnDrag(e: DragEvent, movingTask: string) {
+    e.dataTransfer.setData("movingTask", movingTask);
+    console.log("added");
+  }
+
   return (
     <div>
       {taskCard?.map((task) => {
@@ -24,6 +30,8 @@ const TaskCard = ({ taskCard }: { taskCard?: TaskType[] }) => {
               });
               setShowPopup(true);
             }}
+            onDragStart={(e) => handleOnDrag(e, JSON.stringify(task))}
+            draggable
           >
             <div className=" font-[500] text-sm text-[#606060] mb-1 break-words hyphens-auto">
               {task.title}
