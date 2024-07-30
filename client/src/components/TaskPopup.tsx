@@ -14,6 +14,7 @@ import { PopupContext, TaskContext } from "@/context/AllContext";
 import { TaskType } from "@/context/AllContextProvider";
 import DownloadIcon from "./icons/DownloadIcon";
 import { TrashIcon } from "@radix-ui/react-icons";
+import toast from "react-hot-toast";
 
 const TaskPopup = ({
   fetchingTasks,
@@ -30,7 +31,7 @@ const TaskPopup = ({
 
   async function handleSubmit() {
     if (task.title.length <= 0 || task.status.length <= 0) {
-      // show error
+      toast.error("Title and Status field are required");
     }
     const value = JSON.stringify(task);
     const authorization = localStorage.getItem("app-token")!;
@@ -46,8 +47,9 @@ const TaskPopup = ({
         }
       );
 
+      const data = await res.json();
+
       if (res.ok) {
-        //show conformation TOSTER
         fetchingTasks();
         setTask({
           title: "",
@@ -56,16 +58,15 @@ const TaskPopup = ({
           status: "",
           priority: "",
         });
-
         setShowPopup(false);
+        toast.success(data.msg);
       } else {
-        // show error TOSTER
+        console.log("DELETE ERROR");
+        toast.error(data.msg);
       }
-
-      // const data = await res.json();
-      // console.log({ data });
     } catch (e) {
       console.log("Error", e);
+      toast.error("Error while completing opration");
     }
   }
 
@@ -77,22 +78,28 @@ const TaskPopup = ({
         body: JSON.stringify({ _id: task._id }),
         headers: { "Content-Type": "application/json", authorization },
       });
-      console.log({ res });
-      // add toast
+
       const data = await res.json();
-      console.log({ data });
-      fetchingTasks();
-      setTask({
-        title: "",
-        description: "",
-        deadline: "",
-        status: "",
-        priority: "",
-      });
+
+      if (res.ok) {
+        fetchingTasks();
+        setTask({
+          title: "",
+          description: "",
+          deadline: "",
+          status: "",
+          priority: "",
+        });
+        toast.success(data.msg);
+      } else {
+        console.log("DELETE ERROR");
+        toast.error(data.msg);
+      }
 
       setShowPopup(false);
     } catch (e) {
       console.log("Error while deleting Task:", e);
+      toast.error("Error while deleting Task");
     }
   }
 

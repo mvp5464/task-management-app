@@ -11,10 +11,10 @@ const myJwt = dotenv.parsed.JWT_SECRET;
 userRoute.post("/signup", async (req, res) => {
   const body: SignUpType = await req.body;
   try {
-    const { success } = signUpZod.safeParse(body);
+    const { success, error } = signUpZod.safeParse(body);
 
     if (!success) {
-      return res.status(403).json({ msg: "Wrong Input" });
+      return res.status(402).json({ msg: error?.errors[0].message });
     }
 
     const findUser = await UserModel.findOne({
@@ -40,7 +40,7 @@ userRoute.post("/signup", async (req, res) => {
       .json({ msg: bearerToken, name: createUser.fullName });
   } catch (e) {
     console.log({ msg: `Error while creating user: ${e}` });
-    return res.status(403).json({ msg: `Error while creating user: ${e}` });
+    return res.status(403).json({ msg: "Error while creating user" });
   }
 });
 
@@ -48,10 +48,10 @@ userRoute.post("/login", async (req, res) => {
   const body: SignInType = await req.body;
 
   try {
-    const { success } = signInZod.safeParse(body);
+    const { success, error } = signInZod.safeParse(body);
 
     if (!success) {
-      return res.status(403).json({ msg: "Wrong Input" });
+      return res.status(402).json({ msg: error?.errors[0].message });
     }
     // encrypt incoming password
 
@@ -70,6 +70,6 @@ userRoute.post("/login", async (req, res) => {
     return res.status(200).json({ msg: bearerToken, name: findUser.fullName });
   } catch (e) {
     console.log({ msg: `Error while logging user: ${e}` });
-    return res.status(403).json({ msg: `Error while logging user: ${e}` });
+    return res.status(403).json({ msg: "Error while logging user" });
   }
 });

@@ -14,9 +14,9 @@ taskRoute.post("/create-task", authMiddleware, async (req, res) => {
   const body: TaskType = await req.body;
 
   try {
-    const { success } = TaskZod.safeParse(body);
+    const { success, error } = TaskZod.safeParse(body);
     if (!success) {
-      return res.status(404).json({ msg: "Wrong input types" });
+      return res.status(402).json({ msg: error?.errors[0].message });
     }
     const userId = res.locals.userId;
 
@@ -31,8 +31,8 @@ taskRoute.post("/create-task", authMiddleware, async (req, res) => {
 
     return res.status(200).json({ msg: "Task Created Successfully" });
   } catch (e) {
-    console.log({ msg: `Error while creating user: ${e}` });
-    return res.status(403).json({ msg: `Error while creating user: ${e}` });
+    console.log({ msg: `Error while creating Task: ${e}` });
+    return res.status(403).json({ msg: `Error while creating Task: ${e}` });
   }
 });
 
@@ -51,9 +51,9 @@ taskRoute.delete("/delete-task", authMiddleware, async (req, res) => {
   const body: TaskDeleteType = await req.body;
 
   try {
-    const { success } = TaskDeleteZod.safeParse(body);
+    const { success, error } = TaskDeleteZod.safeParse(body);
     if (!success) {
-      return res.status(404).json({ msg: "Wrong input types" });
+      return res.status(402).json({ msg: error?.errors[0].message });
     }
 
     const deleteTask = await TaskModel.deleteOne({
@@ -64,7 +64,7 @@ taskRoute.delete("/delete-task", authMiddleware, async (req, res) => {
       return res.status(404).json({ msg: `Error while deleting a task` });
     }
 
-    return res.status(200).json({ msg: "Deleted task successfully" });
+    return res.status(200).json({ msg: "Task Deleted Successfully" });
   } catch (e) {
     console.log("Error while deleting a task:", e);
     return res.status(404).json({ msg: `Error while deleting a task: ${e}` });
@@ -75,10 +75,10 @@ taskRoute.put("/update-task", authMiddleware, async (req, res) => {
   const body: TaskType = await req.body;
 
   try {
-    const { success } = TaskZod.safeParse(body);
+    const { success, error } = TaskZod.safeParse(body);
 
     if (!success || !body._id) {
-      return res.status(402).json({ msg: "Wrong input" });
+      return res.status(402).json({ msg: error?.errors[0].message });
     }
 
     const updateTask = await TaskModel.updateOne(
@@ -98,7 +98,7 @@ taskRoute.put("/update-task", authMiddleware, async (req, res) => {
       return res.status(404).json({ msg: `Error while updating a task` });
     }
 
-    return res.status(200).json({ msg: "Task updated successfully" });
+    return res.status(200).json({ msg: "Task Updated Successfully" });
   } catch (e) {
     return res.status(404).json({ msg: `Error while updating a task: ${e}` });
   }

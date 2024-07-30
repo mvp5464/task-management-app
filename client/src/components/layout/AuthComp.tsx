@@ -52,16 +52,11 @@ const AuthComp = ({ role }: { role: "login" | "signup" }) => {
           localStorage.setItem("app-token", data.msg);
           localStorage.setItem("app-name", data.name);
           router.push("/dashboard");
-          return;
         } else {
           setErrorMessage(data.msg);
         }
       }
-      if (input.fullName.length <= 0) {
-        setIsLoading(false);
-        setErrorMessage("Wrong input");
-        return;
-      }
+
       if (role === "signup") {
         const res = await fetch(`http://localhost:8080/api/v1/user/signup`, {
           method: "POST",

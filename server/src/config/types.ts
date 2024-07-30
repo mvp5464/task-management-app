@@ -1,28 +1,28 @@
 import { z } from "zod";
 
 export const signUpZod = z.object({
-  fullName: z.string().min(1),
-  email: z.string().email(),
-  password: z.string().min(6),
+  fullName: z.string().min(1, "The name field is required."),
+  email: z.string().email("Please enter a valid email address."),
+  password: z.string().min(6, "Password must be at least 6 characters long."),
 });
 
 export const signInZod = z.object({
-  email: z.string().email(),
-  password: z.string().min(6),
+  email: z.string().email("Please enter a valid email address."),
+  password: z.string().min(6, "Password must be at least 6 characters long."),
 });
 
 export const TaskZod = z.object({
   _id: z.string().optional(),
   userId: z.string().optional(),
-  title: z.string(),
+  title: z.string().min(1, "The title field is required."),
   description: z.string().optional(),
-  status: z.string(),
+  status: z.string().min(1, "The status field is required"),
   priority: z.enum(["Low", "Medium", "Urgent", ""]).optional(),
   deadline: z.string().optional(),
 });
 
 export const TaskDeleteZod = z.object({
-  _id: z.string(),
+  _id: z.string().min(1),
 });
 
 export type SignUpType = z.infer<typeof signUpZod>;
