@@ -1,5 +1,5 @@
 "use client";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import AnalyticsIcon from "./icons/AnalyticsIcon";
 import BellIcon from "./icons/BellIcon";
 import BoardsIcon from "./icons/BoardsIcon";
@@ -17,6 +17,11 @@ import { PopupContext } from "@/context/AllContext";
 
 const SidebarComp = ({}: {}) => {
   const { setShowPopup } = useContext(PopupContext);
+  const [user, setUser] = useState<string>("");
+
+  useEffect(() => {
+    setUser(localStorage.getItem("app-name")!);
+  }, []);
 
   const router = useRouter();
 
@@ -28,10 +33,10 @@ const SidebarComp = ({}: {}) => {
             <Avatar className="h-8 w-8">
               <AvatarImage src="https://github.com/shadcn.png1" />
               <AvatarFallback className=" bg-slate-400 text-white">
-                JG
+                {user?.split(" ")[0][0]}
               </AvatarFallback>
             </Avatar>
-            <div>Joe Gardner</div>
+            <div>{user}</div>
           </div>
           <div className=" flex justify-between items-center mb-2">
             <div className=" flex gap-4">

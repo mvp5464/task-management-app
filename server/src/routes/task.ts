@@ -6,10 +6,11 @@ import {
   TaskZod,
 } from "../config/types";
 import { TaskModel } from "../config/db";
+import { authMiddleware } from "../config/middleware";
 
 export const taskRoute = express.Router();
 
-taskRoute.post("/create", async (req, res) => {
+taskRoute.post("/create-task", authMiddleware, async (req, res) => {
   const body: TaskType = await req.body;
 
   try {
@@ -17,15 +18,16 @@ taskRoute.post("/create", async (req, res) => {
     if (!success) {
       return res.status(404).json({ msg: "Wrong input types" });
     }
+    const userId = res.locals.userId;
 
-    const taskCreate = await TaskModel.create({
+    await TaskModel.create({
+      userId,
       title: body.title,
       status: body.status,
       description: body.description,
       priority: body.priority,
       deadline: body.deadline,
     });
-    console.log({ taskCreate });
 
     return res.status(200).json({ msg: "Task Created Successfully" });
   } catch (e) {
@@ -34,9 +36,10 @@ taskRoute.post("/create", async (req, res) => {
   }
 });
 
-taskRoute.get("/get-task", async (req, res) => {
+taskRoute.get("/get-task", authMiddleware, async (req, res) => {
   try {
-    const allTasks = await TaskModel.find();
+    const userId = res.locals.userId;
+    const allTasks = await TaskModel.find({ userId });
     return res.status(200).json({ msg: allTasks });
   } catch (e) {
     console.log("Error:", e);
@@ -44,7 +47,7 @@ taskRoute.get("/get-task", async (req, res) => {
   }
 });
 
-taskRoute.delete("/delete-task", async (req, res) => {
+taskRoute.delete("/delete-task", authMiddleware, async (req, res) => {
   const body: TaskDeleteType = await req.body;
 
   try {
@@ -68,7 +71,7 @@ taskRoute.delete("/delete-task", async (req, res) => {
   }
 });
 
-taskRoute.put("/update-task", async (req, res) => {
+taskRoute.put("/update-task", authMiddleware, async (req, res) => {
   const body: TaskType = await req.body;
 
   try {

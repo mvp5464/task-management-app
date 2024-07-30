@@ -36,6 +36,10 @@ const taskSchema = new Schema(
     },
     priority: String,
     deadline: String,
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Users",
+    },
   },
   {
     timestamps: true,

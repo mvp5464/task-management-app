@@ -48,8 +48,9 @@ const AuthComp = ({ role }: { role: "login" | "signup" }) => {
         });
         const data = await res.json();
 
-        localStorage.setItem("app-token", data.msg);
         if (res.ok) {
+          localStorage.setItem("app-token", data.msg);
+          localStorage.setItem("app-name", data.name);
           router.push("/dashboard");
           return;
         } else {
@@ -69,7 +70,9 @@ const AuthComp = ({ role }: { role: "login" | "signup" }) => {
         });
 
         const data = await res.json();
+
         if (res.ok) {
+          localStorage.setItem("app-token", data.msg);
           router.push("/dashboard");
         } else {
           setErrorMessage(data.msg);

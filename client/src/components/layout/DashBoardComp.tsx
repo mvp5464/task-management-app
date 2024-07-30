@@ -16,6 +16,8 @@ import { useContext, useEffect, useState } from "react";
 import TaskPopup from "../TaskPopup";
 import { TaskType } from "@/context/AllContextProvider";
 import { PopupContext } from "@/context/AllContext";
+import SearchIcon from "../icons/SearchIcon";
+import { useRouter } from "next/navigation";
 
 interface CategorizedTask {
   "To do": TaskType[];
@@ -26,6 +28,7 @@ interface CategorizedTask {
 
 const DashBoardComp = () => {
   const { showPopup, setShowPopup } = useContext(PopupContext);
+  const [user, setUser] = useState<string>("");
   const [tasks, setTasks] = useState<TaskType[]>([]);
   const [categorizedTasks, setCategorizedTasks] = useState<CategorizedTask>({
     "To do": [],
@@ -33,6 +36,7 @@ const DashBoardComp = () => {
     "Under review": [],
     Finished: [],
   });
+  const router = useRouter();
 
   useEffect(() => {
     const categorized: CategorizedTask = {
@@ -53,16 +57,28 @@ const DashBoardComp = () => {
     setCategorizedTasks(categorized);
   }, [tasks]);
   const fetchingTasks = async () => {
+    const authorization = localStorage.getItem("app-token")!;
     try {
-      const res = await fetch(`http://localhost:8080/api/v1/task/get-task`);
+      const res = await fetch(`http://localhost:8080/api/v1/task/get-task`, {
+        headers: { authorization },
+      });
       const data = await res.json();
-      setTasks(data.msg);
+      if (res.ok) {
+        setTasks(data.msg);
+      }
+      if (data.msg === "No JWT provided") {
+        router.push("/login");
+      }
     } catch (e) {
       console.log("Error while fetching data ", e);
     }
   };
   useEffect(() => {
     fetchingTasks();
+  }, []);
+
+  useEffect(() => {
+    setUser(localStorage.getItem("app-name")!);
   }, []);
 
   return (
@@ -75,7 +91,7 @@ const DashBoardComp = () => {
           <div className=" m-3 mt-5 mr-5 bg-white">
             <div className=" flex justify-between">
               <div className=" font-semibold text-[2.4rem] py-2">
-                Good morning, Joe!
+                Good morning, {user.split(" ")[0]}
               </div>
               <div className=" flex gap-1 mt-3">
                 <span>Help & feedback&nbsp;</span>
@@ -106,12 +122,15 @@ const DashBoardComp = () => {
               />
             </div>
             <div className=" flex justify-between items-center mb-4">
-              <div>
+              <div className=" relative">
                 <input
                   className="w-44 p-1 border rounded-md"
                   type="text"
                   placeholder="Search"
                 />
+                <button className="absolute -bottom-0.5 -right-2 flex h-10 items-center px-4 text-gray-600">
+                  <SearchIcon />
+                </button>
               </div>
               <div className=" flex gap-3">
                 <div className="flex justify-center items-center gap-3">

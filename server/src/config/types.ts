@@ -13,6 +13,7 @@ export const signInZod = z.object({
 
 export const TaskZod = z.object({
   _id: z.string().optional(),
+  userId: z.string().optional(),
   title: z.string(),
   description: z.string().optional(),
   status: z.string(),

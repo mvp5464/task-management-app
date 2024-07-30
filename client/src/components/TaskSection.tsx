@@ -27,7 +27,7 @@ const TaskSection = ({
           <TaskCard taskCard={taskCard} />
         </div>
         <button
-          className=" flex justify-between items-center w-full bg-gradient-to-b from-[#3A3A3A] to-[#202020] text-white p-2 rounded-lg"
+          className=" flex justify-between items-center w-full bg-gradient-to-b from-[#3A3A3A] to-[#202020] text-white p-2 rounded-lg mb-4"
           onClick={() => {
             setShowPopup(true);
             setTask((val) => ({ ...val, status: status }));

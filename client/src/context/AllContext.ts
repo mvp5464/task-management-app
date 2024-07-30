@@ -1,5 +1,5 @@
 import { createContext, Dispatch, SetStateAction } from "react";
-import { TaskType, UserType } from "./AllContextProvider";
+import { TaskType } from "./AllContextProvider";
 
 interface PopupContextType {
   showPopup: boolean;
@@ -10,20 +10,6 @@ interface TaskContextType {
   task: TaskType;
   setTask: Dispatch<SetStateAction<TaskType>>;
 }
-
-interface UserContextType {
-  user: UserType;
-  setUser: Dispatch<SetStateAction<UserType>>;
-}
-
-export const UserContext = createContext<UserContextType>({
-  user: {
-    fullName: "",
-    email: "",
-    password: "",
-  },
-  setUser: () => {},
-});
 
 export const TaskContext = createContext<TaskContextType>({
   task: {

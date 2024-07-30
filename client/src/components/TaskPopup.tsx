@@ -33,15 +33,16 @@ const TaskPopup = ({
       // show error
     }
     const value = JSON.stringify(task);
+    const authorization = localStorage.getItem("app-token")!;
     try {
       const res = await fetch(
         `http://localhost:8080/api/v1/task/${
-          task._id ? "update-task" : "create"
+          task._id ? "update-task" : "create-task"
         }`,
         {
           method: `${task._id ? "PUT" : "POST"}`,
           body: value,
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", authorization },
         }
       );
 
@@ -69,13 +70,15 @@ const TaskPopup = ({
   }
 
   async function handleDelete() {
+    const authorization = localStorage.getItem("app-token")!;
     try {
       const res = await fetch(`http://localhost:8080/api/v1/task/delete-task`, {
         method: "DELETE",
         body: JSON.stringify({ _id: task._id }),
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", authorization },
       });
       console.log({ res });
+      // add toast
       const data = await res.json();
       console.log({ data });
       fetchingTasks();
@@ -154,7 +157,7 @@ const TaskPopup = ({
               }
             />
           </div>
-          {JSON.stringify(task)}
+          {/* {JSON.stringify(task)} */}
           <div>
             <PopupSection logo={<LoadingIcon />} title={"Status"} />
             <PopupSection logo={<DangerIcon />} title={"Priority"} />

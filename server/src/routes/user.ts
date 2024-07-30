@@ -5,6 +5,9 @@ import jwt from "jsonwebtoken";
 
 export const userRoute = express.Router();
 
+const dotenv = require("dotenv").config();
+const myJwt = dotenv.parsed.JWT_SECRET;
+
 userRoute.post("/signup", async (req, res) => {
   const body: SignUpType = await req.body;
   try {
@@ -23,14 +26,18 @@ userRoute.post("/signup", async (req, res) => {
     }
     // encrypt the password here
 
-    await UserModel.create({
+    const createUser = await UserModel.create({
       fullName: body.fullName,
       email: body.email,
       password: body.password,
     });
 
-    res.json({ msg: "User is created successfully" }).status(200);
-    return;
+    const token = jwt.sign(createUser._id.toString(), myJwt);
+    const bearerToken = `bearer ${token}`;
+
+    return res
+      .status(200)
+      .json({ msg: bearerToken, name: createUser.fullName });
   } catch (e) {
     console.log({ msg: `Error while creating user: ${e}` });
     return res.status(403).json({ msg: `Error while creating user: ${e}` });
@@ -39,8 +46,6 @@ userRoute.post("/signup", async (req, res) => {
 
 userRoute.post("/login", async (req, res) => {
   const body: SignInType = await req.body;
-  const dotenv = require("dotenv").config();
-  const myJwt = dotenv.parsed.JWT_SECRET;
 
   try {
     const { success } = signInZod.safeParse(body);
@@ -62,7 +67,7 @@ userRoute.post("/login", async (req, res) => {
     const token = jwt.sign(findUser._id.toString(), myJwt);
     const bearerToken = `bearer ${token}`;
 
-    return res.json({ msg: bearerToken });
+    return res.status(200).json({ msg: bearerToken, name: findUser.fullName });
   } catch (e) {
     console.log({ msg: `Error while logging user: ${e}` });
     return res.status(403).json({ msg: `Error while logging user: ${e}` });
