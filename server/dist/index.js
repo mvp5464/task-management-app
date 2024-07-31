@@ -4,10 +4,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.dotenv = void 0;
+exports.dotenv = require("dotenv").config();
 const express_1 = __importDefault(require("express"));
 const app = (0, express_1.default)();
 const cors_1 = __importDefault(require("cors"));
-exports.dotenv = require("dotenv").config();
 const user_1 = require("./routes/user");
 const task_1 = require("./routes/task");
 const router = express_1.default.Router();

@@ -1,7 +1,7 @@
+export const dotenv = require("dotenv").config();
 import express from "express";
 const app = express();
 import cors from "cors";
-export const dotenv = require("dotenv").config();
 import { userRoute } from "./routes/user";
 import { taskRoute } from "./routes/task";
 
