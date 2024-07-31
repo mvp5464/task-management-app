@@ -142,7 +142,7 @@ const AuthComp = ({ role }: { role: "login" | "signup" }) => {
           </div>
         ) : (
           <div className=" text-[#606060]">
-            Don't have an account? Create a{" "}
+            Don&apos;t have an account? Create a{" "}
             <Link className="text-[#0054A1]" href={"/signup"}>
               new account
             </Link>

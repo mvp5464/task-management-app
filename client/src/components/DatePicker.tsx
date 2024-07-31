@@ -20,7 +20,7 @@ export function DatePickerDemo() {
     if (date) {
       setTask((v) => ({ ...v, deadline: dateFormatFunction(date) }));
     }
-  }, [date]);
+  }, [date, setTask]);
 
   return (
     <Popover>
