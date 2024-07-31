@@ -73,6 +73,7 @@ const AuthComp = ({ role }: { role: "login" | "signup" }) => {
 
         if (res.ok) {
           localStorage.setItem("app-token", data.msg);
+          localStorage.setItem("app-name", data.name);
           router.push("/dashboard");
         } else {
           setErrorMessage(data.msg);

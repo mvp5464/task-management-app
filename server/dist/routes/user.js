@@ -17,7 +17,7 @@ const express_1 = __importDefault(require("express"));
 const types_1 = require("../config/types");
 const db_1 = require("../config/db");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const bcrypt_1 = __importDefault(require("bcrypt"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const __1 = require("..");
 exports.userRoute = express_1.default.Router();
 const myJwt = __1.dotenv.parsed.JWT_SECRET;
@@ -34,7 +34,8 @@ exports.userRoute.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0
         if (findUser) {
             return res.status(402).json({ msg: "User already exists" });
         }
-        const hashedPassword = yield bcrypt_1.default.hash(body.password, 10);
+        const hashedPassword = yield bcryptjs_1.default.hash(body.password, 10);
+        console.log({ hashedPassword });
         const createUser = yield db_1.UserModel.create({
             fullName: body.fullName,
             email: body.email,
@@ -64,7 +65,8 @@ exports.userRoute.post("/login", (req, res) => __awaiter(void 0, void 0, void 0,
         if (!findUser) {
             return res.status(403).json({ msg: "Invalid email address" });
         }
-        const passwordValidation = yield bcrypt_1.default.compare(body.password, findUser.password);
+        const passwordValidation = yield bcryptjs_1.default.compare(body.password, findUser.password);
+        console.log({ passwordValidation });
         if (!passwordValidation) {
             return res.status(403).json({ msg: "Password is incorrect" });
         }
