@@ -2,7 +2,7 @@ import { TaskType } from "@/context/AllContextProvider";
 import TimeIcon from "./icons/TimeIcon";
 import { DragEvent, useContext } from "react";
 import { PopupContext, TaskContext } from "@/context/AllContext";
-import { timePassedFunction } from "@/lib/utils";
+import { timePassedFunction } from "@/utils/getTime";
 
 const TaskCard = ({ taskCard }: { taskCard?: TaskType[] }) => {
   const { setShowPopup } = useContext(PopupContext);
