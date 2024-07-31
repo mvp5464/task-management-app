@@ -27,6 +27,11 @@ exports.TaskModel = exports.UserModel = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
 const __1 = require("..");
 const mongoUrl = __1.dotenv.parsed.MONGO_URI;
+const uri = process.env.MONGODB_URI;
+console.log({ mongoUrl });
+if (!mongoUrl) {
+    throw new Error("MONGODB_URI is not defined");
+}
 mongoose_1.default.connect(mongoUrl);
 const userSchema = new mongoose_1.Schema({
     fullName: {

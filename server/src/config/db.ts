@@ -2,6 +2,11 @@ import mongoose, { Schema } from "mongoose";
 import { dotenv } from "..";
 const mongoUrl = dotenv.parsed.MONGO_URI;
 
+console.log({ mongoUrl });
+if (!mongoUrl) {
+  throw new Error("MONGODB_URI is not defined");
+}
+
 mongoose.connect(mongoUrl);
 
 const userSchema = new Schema(

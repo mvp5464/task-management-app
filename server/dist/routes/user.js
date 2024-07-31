@@ -35,7 +35,6 @@ exports.userRoute.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0
             return res.status(402).json({ msg: "User already exists" });
         }
         const hashedPassword = yield bcryptjs_1.default.hash(body.password, 10);
-        console.log({ hashedPassword });
         const createUser = yield db_1.UserModel.create({
             fullName: body.fullName,
             email: body.email,
@@ -66,7 +65,6 @@ exports.userRoute.post("/login", (req, res) => __awaiter(void 0, void 0, void 0,
             return res.status(403).json({ msg: "Invalid email address" });
         }
         const passwordValidation = yield bcryptjs_1.default.compare(body.password, findUser.password);
-        console.log({ passwordValidation });
         if (!passwordValidation) {
             return res.status(403).json({ msg: "Password is incorrect" });
         }
