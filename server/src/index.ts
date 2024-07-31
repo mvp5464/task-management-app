@@ -1,12 +1,12 @@
 import express from "express";
 const app = express();
 import cors from "cors";
-export const dotenv = require("dotenv").config({ path: __dirname + "/.env" });
+export const dotenv = require("dotenv").config();
 import { userRoute } from "./routes/user";
 import { taskRoute } from "./routes/task";
 
 const router = express.Router();
-const PORT = 8080;
+const PORT = dotenv.parsed.PORT;
 
 app.use(cors());
 app.use(express.json());
