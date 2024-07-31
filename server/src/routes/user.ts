@@ -3,10 +3,10 @@ import { SignInType, signInZod, SignUpType, signUpZod } from "../config/types";
 import { UserModel } from "../config/db";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { dotenv } from "..";
 
 export const userRoute = express.Router();
 type CompleteSignupType = Required<SignUpType>;
-const dotenv = require("dotenv").config();
 const myJwt = dotenv.parsed.JWT_SECRET;
 
 userRoute.post("/signup", async (req, res) => {

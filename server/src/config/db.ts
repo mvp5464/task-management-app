@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-const dotenv = require("dotenv").config();
+import { dotenv } from "..";
 const mongoUrl = dotenv.parsed.MONGO_URI;
 
 mongoose.connect(mongoUrl);

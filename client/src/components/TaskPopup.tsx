@@ -75,11 +75,14 @@ const TaskPopup = ({
     const authorization = localStorage.getItem("app-token")!;
     setDeleteLoading(true);
     try {
-      const res = await fetch(`http://localhost:8080/api/v1/task/delete-task`, {
-        method: "DELETE",
-        body: JSON.stringify({ _id: task._id }),
-        headers: { "Content-Type": "application/json", authorization },
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL!}/api/v1/task/delete-task`,
+        {
+          method: "DELETE",
+          body: JSON.stringify({ _id: task._id }),
+          headers: { "Content-Type": "application/json", authorization },
+        }
+      );
 
       const data = await res.json();
 

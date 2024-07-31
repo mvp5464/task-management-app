@@ -1,6 +1,7 @@
 import express from "express";
 const app = express();
 import cors from "cors";
+export const dotenv = require("dotenv").config({ path: __dirname + "/.env" });
 import { userRoute } from "./routes/user";
 import { taskRoute } from "./routes/task";
 

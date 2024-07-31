@@ -41,9 +41,12 @@ const DashBoardComp = () => {
   const fetchingTasks = useCallback(async () => {
     const authorization = localStorage.getItem("app-token")!;
     try {
-      const res = await fetch(`http://localhost:8080/api/v1/task/get-task`, {
-        headers: { authorization },
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL!}/api/v1/task/get-task`,
+        {
+          headers: { authorization },
+        }
+      );
       const data = await res.json();
       if (res.ok) {
         setTasks(data.msg);
@@ -120,7 +123,7 @@ const DashBoardComp = () => {
           <div className=" m-3 mt-5 mr-5 bg-white">
             <div className=" flex justify-between">
               <div className=" font-semibold text-[2.4rem] py-2">
-                Good morning, {user.split(" ")[0]}
+                Good morning, {user?.split(" ")[0]}
               </div>
               <div className=" flex gap-1 mt-3">
                 <span>Help & feedback&nbsp;</span>
