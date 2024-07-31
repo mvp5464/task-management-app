@@ -2,12 +2,11 @@ import mongoose, { Schema } from "mongoose";
 import { dotenv } from "..";
 const mongoUrl = dotenv.parsed.MONGO_URI;
 const myPort = dotenv.parsed.PORT;
+const myJwt = dotenv.parsed.JWT_SECRET;
 
 console.log({ myPort });
+console.log({ myJwt });
 console.log({ mongoUrl });
-if (!myPort) {
-  throw new Error("Port is not defined");
-}
 
 if (!mongoUrl) {
   throw new Error("MONGODB_URI is not defined");
