@@ -51,10 +51,10 @@ const TaskPopup = ({
 
   async function handleSubmit() {
     if (task.title.length <= 0) {
-      return toast.error("title field is required");
+      return toast.error("Title field is required");
     }
     if (task.status.length <= 0) {
-      return toast.error("status field is required");
+      return toast.error("Status field is required");
     }
     const value = JSON.stringify(task);
     const authorization = localStorage.getItem("app-token")!;
@@ -176,14 +176,14 @@ const TaskPopup = ({
               </button>
             </div>
             <div className=" flex gap-4">
-              <div className=" flex gap-4 p-[0.45rem] rounded-md bg-[#F4F4F4] text-[0.9rem] text-[#797979]">
+              <button className=" flex gap-4 p-[0.45rem] rounded-md bg-[#F4F4F4] text-[0.9rem] text-[#797979] hover:shadow-lg hover:shadow-slate-500">
                 <span>Share</span>
                 <ShareIcon className="w-5 h-5" />
-              </div>
-              <div className=" flex gap-4 p-[0.45rem] rounded-md bg-[#F4F4F4] text-[0.9rem] text-[#797979]">
+              </button>
+              <button className=" flex gap-4 p-[0.45rem] rounded-md bg-[#F4F4F4] text-[0.9rem] text-[#797979] hover:shadow-lg hover:shadow-slate-500">
                 <span>Favorite</span>
                 <StarIcon className="w-5 h-5" />
-              </div>
+              </button>
             </div>
           </div>
           <div className="mb-6">
@@ -215,7 +215,7 @@ const TaskPopup = ({
           />
           <div className=" flex justify-center gap-10">
             <button
-              className=" flex gap-4 p-[0.45rem] justify-center items-center rounded-md bg-[#F4F4F4] text-[0.9rem] text-[#797979]"
+              className=" flex gap-4 p-[0.45rem] justify-center items-center rounded-md bg-[#F4F4F4] text-[0.9rem] text-[#797979] hover:shadow-lg hover:shadow-slate-500"
               disabled={saveLoading || deleteLoading}
               onClick={handleSubmit}
             >
@@ -228,7 +228,7 @@ const TaskPopup = ({
             </button>
             {task._id && (
               <button
-                className=" flex gap-4 p-[0.45rem] justify-center items-center rounded-md bg-[#F4F4F4] text-[0.9rem] text-[#797979]"
+                className=" flex gap-4 p-[0.45rem] justify-center items-center rounded-md bg-[#F4F4F4] text-[0.9rem] text-[#797979] hover:shadow-lg hover:shadow-slate-500"
                 disabled={saveLoading || deleteLoading}
                 onClick={handleDelete}
               >

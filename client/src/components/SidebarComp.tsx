@@ -45,7 +45,7 @@ const SidebarComp = ({}: {}) => {
               <DoubleArrowIcon />
             </div>
             <button
-              className=" bg-[#F4F4F4] py-2 px-1 rounded-sm text-[#797979]"
+              className=" bg-[#F4F4F4] py-2 px-1 rounded-lg text-[#797979] hover:shadow-lg hover:shadow-slate-400 "
               onClick={() => {
                 localStorage.removeItem("app-token");
                 router.push("/login");
@@ -63,7 +63,7 @@ const SidebarComp = ({}: {}) => {
           </div>
           <div className="bg-gradient-to-b  from-[#4B36CC] to-[#9C93D4] rounded-lg">
             <button
-              className=" bg-gradient-to-b from-[#4C38C2] to-[#2F2188] w-full text-white font- text-lg rounded-lg flex gap-2 py-3 justify-center items-center"
+              className=" bg-gradient-to-b from-[#4C38C2] to-[#2F2188] w-full text-white font- text-lg rounded-lg flex gap-2 py-3 justify-center items-center  hover:shadow-lg hover:shadow-slate-500"
               onClick={() => setShowPopup(true)}
             >
               <span>Create new task&nbsp;</span>

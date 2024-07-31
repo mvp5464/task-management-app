@@ -11,7 +11,7 @@ const IntroSection = ({
 }) => {
   return (
     <>
-      <div className=" grid grid-cols-[1fr,3fr] gap-2 w-full h-28 border py-3 px-1 border-[#F4F4F4] rounded-lg">
+      <div className=" grid grid-cols-[1fr,3fr] gap-2 w-full h-28 border py-3 px-1 border-[#F4F4F4] rounded-lg  hover:shadow-lg hover:shadow-slate-500">
         <div className="flex justify-center items-center bg-blue-3001">
           <div className=" flex justify-center items-center bg-fuchsia-4001 ">
             {image}

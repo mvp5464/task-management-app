@@ -131,7 +131,7 @@ const AuthComp = ({ role }: { role: "login" | "signup" }) => {
         </div>
         <div className=" flex flex-col gap-4 w-full mb-5">
           <button
-            className=" flex gap-4 justify-center items-center text-white py-3 rounded-lg bg-gradient-to-b from-[#4C38C2] to-[#2F2188] "
+            className=" flex gap-4 justify-center items-center text-white py-3 rounded-lg bg-gradient-to-b from-[#4C38C2] to-[#2F2188] hover:shadow-slate-700 shadow-lg shadow-slate-500"
             disabled={isLoading}
             onClick={handleSubmit}
           >

@@ -178,7 +178,7 @@ const DashBoardComp = () => {
                   <TabSection name={"Share"} icon={<ShareIcon />} />
                 </div>
                 <button
-                  className=" bg-gradient-to-b from-[#4C38C2] to-[#2F2188] px-2 py-1 text-white font- text-[0.9rem] rounded-lg flex gap-2 justify-center items-center"
+                  className=" bg-gradient-to-b from-[#4C38C2] to-[#2F2188] px-2 py-1 text-white font- text-[0.9rem] rounded-lg flex gap-2 justify-center items-center hover:shadow-lg hover:shadow-slate-500"
                   onClick={() => setShowPopup(true)}
                 >
                   <span>Create new&nbsp;</span>
