@@ -12,7 +12,7 @@ import TabSection from "../TabSection";
 import IntroducingImg from "../icons/IntroducingImg";
 import ShareImg from "../icons/ShareImg";
 import AccessImg from "../icons/AccessImg";
-import { DragEvent, useContext, useEffect, useState } from "react";
+import { DragEvent, useCallback, useContext, useEffect, useState } from "react";
 import TaskPopup from "../TaskPopup";
 import { StatusType, TaskType } from "@/context/AllContextProvider";
 import { PopupContext } from "@/context/AllContext";
@@ -38,7 +38,7 @@ const DashBoardComp = () => {
   });
   const router = useRouter();
 
-  const fetchingTasks = async () => {
+  const fetchingTasks = useCallback(async () => {
     const authorization = localStorage.getItem("app-token")!;
     try {
       const res = await fetch(`http://localhost:8080/api/v1/task/get-task`, {
@@ -54,7 +54,7 @@ const DashBoardComp = () => {
     } catch (e) {
       console.log("Error while fetching data ", e);
     }
-  };
+  }, [router]);
 
   async function handleOnDrop(e: DragEvent, status: StatusType) {
     const movingTask = e.dataTransfer.getData("movingTask");
@@ -108,7 +108,7 @@ const DashBoardComp = () => {
   useEffect(() => {
     fetchingTasks();
     setUser(localStorage.getItem("app-name")!);
-  }, []);
+  }, [fetchingTasks]);
 
   return (
     <>
