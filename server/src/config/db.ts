@@ -1,5 +1,5 @@
+const dotenv = require("dotenv").config();
 import mongoose, { Schema } from "mongoose";
-import { dotenv } from "..";
 const mongoUrl = dotenv.parsed.MONGO_URI;
 const myPort = dotenv.parsed.PORT;
 const myJwt = dotenv.parsed.JWT_SECRET;

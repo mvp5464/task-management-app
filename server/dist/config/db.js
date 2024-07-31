@@ -24,11 +24,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TaskModel = exports.UserModel = void 0;
+const dotenv = require("dotenv").config();
 const mongoose_1 = __importStar(require("mongoose"));
-const __1 = require("..");
-const mongoUrl = __1.dotenv.parsed.MONGO_URI;
-const myPort = __1.dotenv.parsed.PORT;
-const myJwt = __1.dotenv.parsed.JWT_SECRET;
+const mongoUrl = dotenv.parsed.MONGO_URI;
+const myPort = dotenv.parsed.PORT;
+const myJwt = dotenv.parsed.JWT_SECRET;
 console.log({ myPort });
 console.log({ myJwt });
 console.log({ mongoUrl });

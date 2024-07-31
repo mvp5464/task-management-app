@@ -1,9 +1,9 @@
+const dotenv = require("dotenv").config();
 import express from "express";
 import { SignInType, signInZod, SignUpType, signUpZod } from "../config/types";
 import { UserModel } from "../config/db";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { dotenv } from "..";
 
 export const userRoute = express.Router();
 type CompleteSignupType = Required<SignUpType>;

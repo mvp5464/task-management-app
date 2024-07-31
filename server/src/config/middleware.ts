@@ -1,6 +1,6 @@
+const dotenv = require("dotenv").config();
 import { RequestHandler } from "express";
 import { verify } from "jsonwebtoken";
-import { dotenv } from "..";
 
 export const authMiddleware: RequestHandler = (req, res, next) => {
   const token = req.headers.authorization;

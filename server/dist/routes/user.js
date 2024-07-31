@@ -13,14 +13,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userRoute = void 0;
+const dotenv = require("dotenv").config();
 const express_1 = __importDefault(require("express"));
 const types_1 = require("../config/types");
 const db_1 = require("../config/db");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
-const __1 = require("..");
 exports.userRoute = express_1.default.Router();
-const myJwt = __1.dotenv.parsed.JWT_SECRET;
+const myJwt = dotenv.parsed.JWT_SECRET;
 exports.userRoute.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = yield req.body;
     try {

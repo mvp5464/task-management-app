@@ -1,4 +1,4 @@
-export const dotenv = require("dotenv").config();
+const dotenv = require("dotenv").config();
 import express from "express";
 const app = express();
 import cors from "cors";
