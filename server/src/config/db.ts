@@ -1,12 +1,6 @@
 const dotenv = require("dotenv").config();
 import mongoose, { Schema } from "mongoose";
 const mongoUrl = dotenv.parsed.MONGO_URI;
-const myPort = dotenv.parsed.PORT;
-const myJwt = dotenv.parsed.JWT_SECRET;
-
-console.log({ myPort });
-console.log({ myJwt });
-console.log({ mongoUrl });
 
 if (!mongoUrl) {
   throw new Error("MONGODB_URI is not defined");

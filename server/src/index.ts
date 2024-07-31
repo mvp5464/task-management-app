@@ -6,14 +6,7 @@ import { userRoute } from "./routes/user";
 import { taskRoute } from "./routes/task";
 
 const router = express.Router();
-const PORT = dotenv.parsed.PORT;
-const mongoUrl = dotenv.parsed.MONGO_URI;
-const myPort = dotenv.parsed.PORT;
-const myJwt = dotenv.parsed.JWT_SECRET;
-
-console.log({ myPort });
-console.log({ myJwt });
-console.log({ mongoUrl });
+const PORT = dotenv.parsed.PORT || 9000;
 
 app.use(cors());
 app.use(express.json());

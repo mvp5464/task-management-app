@@ -98,7 +98,7 @@ const AuthComp = ({ role }: { role: "login" | "signup" }) => {
         <div className="relative flex flex-col gap-4 w-full mb-5">
           {role === "signup" && (
             <input
-              className=" py-3 px-2 rounded-lg bg-[#EBEBEB] placeholder-[#999999] focus:outline-[#999999] focus:outline "
+              className=" py-3 px-2 text-[#2D2D2D] rounded-lg bg-[#EBEBEB] placeholder-[#999999] focus:outline-[#999999] focus:outline "
               type="text"
               value={input.fullName}
               name="fullName"
@@ -107,7 +107,7 @@ const AuthComp = ({ role }: { role: "login" | "signup" }) => {
             />
           )}
           <input
-            className=" py-3 px-2 rounded-lg bg-[#EBEBEB] placeholder-[#999999] focus:outline-[#999999] focus:outline "
+            className=" py-3 px-2 text-[#2D2D2D] rounded-lg bg-[#EBEBEB] placeholder-[#999999] focus:outline-[#999999] focus:outline "
             type="text"
             value={input.email}
             name="email"
@@ -115,7 +115,7 @@ const AuthComp = ({ role }: { role: "login" | "signup" }) => {
             onChange={handleOnChange}
           />
           <input
-            className=" py-3 px-2 rounded-lg bg-[#EBEBEB] placeholder-[#999999] focus:outline-[#999999] focus:outline "
+            className=" py-3 px-2 text-[#2D2D2D] rounded-lg bg-[#EBEBEB] placeholder-[#999999] focus:outline-[#999999] focus:outline "
             type={isPasswordVisible ? "text" : "password"}
             value={input.password}
             name="password"
@@ -131,7 +131,7 @@ const AuthComp = ({ role }: { role: "login" | "signup" }) => {
         </div>
         <div className=" flex flex-col gap-4 w-full mb-5">
           <button
-            className=" flex gap-4 justify-center items-center text-white py-3 rounded-lg bg-gradient-to-b from-[#8c80ce] to-[#7066b0] "
+            className=" flex gap-4 justify-center items-center text-white py-3 rounded-lg bg-gradient-to-b from-[#4C38C2] to-[#2F2188] "
             disabled={isLoading}
             onClick={handleSubmit}
           >

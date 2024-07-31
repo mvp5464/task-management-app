@@ -41,7 +41,7 @@ const TaskPopup = ({
     } else {
       containerControls.start("close");
     }
-  }, [showPopup]);
+  }, [showPopup, containerControls]);
 
   const {
     task,
