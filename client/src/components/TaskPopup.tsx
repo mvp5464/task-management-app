@@ -1,5 +1,11 @@
 "use client";
-import { Dispatch, SetStateAction, useContext, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import PopupSection from "./PopupSection";
 import CrossIcon from "./icons/CrossIcon";
 import TwoSideArrowIcon from "./icons/TwoSideArrowIcon";
@@ -15,15 +21,27 @@ import { TaskType } from "@/context/AllContextProvider";
 import DownloadIcon from "./icons/DownloadIcon";
 import { TrashIcon } from "@radix-ui/react-icons";
 import toast, { LoaderIcon } from "react-hot-toast";
+import { motion, useAnimationControls } from "framer-motion";
+import { containerVariants } from "@/utils/animateProp";
 
 const TaskPopup = ({
   fetchingTasks,
 }: {
   fetchingTasks: () => Promise<void>;
 }) => {
-  const { setShowPopup } = useContext(PopupContext);
+  const { showPopup, setShowPopup } = useContext(PopupContext);
   const [saveLoading, setSaveLoading] = useState<boolean>(false);
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
+
+  const containerControls = useAnimationControls();
+
+  useEffect(() => {
+    if (showPopup) {
+      containerControls.start("open");
+    } else {
+      containerControls.start("close");
+    }
+  }, [showPopup]);
 
   const {
     task,
@@ -32,6 +50,12 @@ const TaskPopup = ({
     useContext(TaskContext);
 
   async function handleSubmit() {
+    if (task.title.length <= 0) {
+      return toast.error("title field is required");
+    }
+    if (task.status.length <= 0) {
+      return toast.error("status field is required");
+    }
     const value = JSON.stringify(task);
     const authorization = localStorage.getItem("app-token")!;
     setSaveLoading(true);
@@ -123,7 +147,10 @@ const TaskPopup = ({
         });
       }}
     >
-      <div
+      <motion.div
+        variants={containerVariants}
+        animate={containerControls}
+        initial="close"
         className="bg-white px-6 py-4 w-[100%] max-w-[38rem] h-full max-h-[100%] overflow-y-auto right-0 fixed"
         onClick={(e) => e.stopPropagation()}
       >
@@ -215,7 +242,7 @@ const TaskPopup = ({
             )}
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };
