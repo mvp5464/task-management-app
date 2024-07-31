@@ -27,7 +27,10 @@ exports.TaskModel = exports.UserModel = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
 const __1 = require("..");
 const mongoUrl = __1.dotenv.parsed.MONGO_URI;
-const uri = process.env.MONGODB_URI;
+const myPort = __1.dotenv.parsed.PORT;
+const myJwt = __1.dotenv.parsed.JWT_SECRET;
+console.log({ myPort });
+console.log({ myJwt });
 console.log({ mongoUrl });
 if (!mongoUrl) {
     throw new Error("MONGODB_URI is not defined");
