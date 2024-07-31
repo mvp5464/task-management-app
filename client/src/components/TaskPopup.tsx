@@ -37,7 +37,7 @@ const TaskPopup = ({
     setSaveLoading(true);
     try {
       const res = await fetch(
-        `http://localhost:8080/api/v1/task/${
+        `${process.env.NEXT_PUBLIC_BASE_URL!}/api/v1/task/${
           task._id ? "update-task" : "create-task"
         }`,
         {
@@ -66,7 +66,7 @@ const TaskPopup = ({
       }
     } catch (e) {
       console.log("Error", e);
-      toast.error("Error while completing opration");
+      toast.error("Error connecting server");
     }
     setSaveLoading(false);
   }
@@ -104,7 +104,7 @@ const TaskPopup = ({
       setShowPopup(false);
     } catch (e) {
       console.log("Error while deleting Task:", e);
-      toast.error("Error while deleting Task");
+      toast.error("Error connecting server");
     }
     setDeleteLoading(false);
   }
@@ -188,7 +188,7 @@ const TaskPopup = ({
           />
           <div className=" flex justify-center gap-10">
             <button
-              className=" flex gap-4 p-[0.45rem] rounded-md bg-[#F4F4F4] text-[0.9rem] text-[#797979]"
+              className=" flex gap-4 p-[0.45rem] justify-center items-center rounded-md bg-[#F4F4F4] text-[0.9rem] text-[#797979]"
               disabled={saveLoading || deleteLoading}
               onClick={handleSubmit}
             >
@@ -201,7 +201,7 @@ const TaskPopup = ({
             </button>
             {task._id && (
               <button
-                className=" flex gap-4 p-[0.45rem] rounded-md bg-[#F4F4F4] text-[0.9rem] text-[#797979]"
+                className=" flex gap-4 p-[0.45rem] justify-center items-center rounded-md bg-[#F4F4F4] text-[0.9rem] text-[#797979]"
                 disabled={saveLoading || deleteLoading}
                 onClick={handleDelete}
               >

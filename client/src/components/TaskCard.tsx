@@ -10,7 +10,6 @@ const TaskCard = ({ taskCard }: { taskCard?: TaskType[] }) => {
 
   function handleOnDrag(e: DragEvent, movingTask: string) {
     e.dataTransfer.setData("movingTask", movingTask);
-    console.log("added");
   }
 
   return (

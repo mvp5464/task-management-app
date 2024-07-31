@@ -18,6 +18,7 @@ import { StatusType, TaskType } from "@/context/AllContextProvider";
 import { PopupContext } from "@/context/AllContext";
 import SearchIcon from "../icons/SearchIcon";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 interface CategorizedTask {
   "To do": TaskType[];
@@ -56,6 +57,7 @@ const DashBoardComp = () => {
       }
     } catch (e) {
       console.log("Error while fetching data ", e);
+      toast.error("Error connecting server");
     }
   }, [router]);
 
@@ -71,17 +73,21 @@ const DashBoardComp = () => {
     const value = JSON.stringify(movedTask);
     const authorization = localStorage.getItem("app-token")!;
     try {
-      const res = await fetch("http://localhost:8080/api/v1/task/update-task", {
-        method: "PUT",
-        body: value,
-        headers: { "Content-Type": "application/json", authorization },
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL!}/api/v1/task/update-task`,
+        {
+          method: "PUT",
+          body: value,
+          headers: { "Content-Type": "application/json", authorization },
+        }
+      );
 
       if (res.ok) {
         fetchingTasks();
       }
     } catch (e) {
       console.log("Error", e);
+      toast.error("Error connecting server");
     }
   }
 
