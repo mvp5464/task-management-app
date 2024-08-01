@@ -17,9 +17,10 @@ taskRoute.post("/create-task", authMiddleware, async (req, res) => {
   try {
     const { success, error } = TaskZod.safeParse(body);
     if (!success) {
-      return res.status(402).json({ msg: error?.errors[0].message });
+      return res.status(400).json({ msg: error?.errors[0].message });
     }
-    const userId = res.locals.userId;
+
+    const { userId } = res.locals.userId;
 
     await TaskModel.create({
       userId,
@@ -30,21 +31,26 @@ taskRoute.post("/create-task", authMiddleware, async (req, res) => {
       deadline: body.deadline,
     });
 
-    return res.status(200).json({ msg: "Task Created Successfully" });
+    return res.status(201).json({ msg: "Task Created Successfully" });
   } catch (e) {
-    console.log({ msg: `Error while creating Task: ${e}` });
-    return res.status(403).json({ msg: `Error while creating Task: ${e}` });
+    console.error({ msg: `Error while creating Task: ${e}` });
+    return res
+      .status(500)
+      .json({ msg: `Internal Server Error while creating Task` });
   }
 });
 
 taskRoute.get("/get-task", authMiddleware, async (req, res) => {
   try {
-    const userId = res.locals.userId;
+    const { userId } = res.locals.userId;
+
     const allTasks: CompleteTaskType[] = await TaskModel.find({ userId });
     return res.status(200).json({ msg: allTasks });
   } catch (e) {
-    console.log("Error:", e);
-    return res.status(402).json({ msg: `Error while getting task info: ${e}` });
+    console.error("Error while getting task info:", e);
+    return res
+      .status(500)
+      .json({ msg: `Internal Server Error while getting task info` });
   }
 });
 
@@ -54,21 +60,23 @@ taskRoute.delete("/delete-task", authMiddleware, async (req, res) => {
   try {
     const { success, error } = TaskDeleteZod.safeParse(body);
     if (!success) {
-      return res.status(402).json({ msg: error?.errors[0].message });
+      return res.status(400).json({ msg: error?.errors[0].message });
     }
 
     const deleteTask = await TaskModel.deleteOne({
       _id: body._id,
     });
 
-    if (!deleteTask.acknowledged) {
-      return res.status(404).json({ msg: `Error while deleting a task` });
+    if (deleteTask.deletedCount === 0) {
+      return res.status(404).json({ msg: "Task not found" });
     }
 
     return res.status(200).json({ msg: "Task Deleted Successfully" });
   } catch (e) {
-    console.log("Error while deleting a task:", e);
-    return res.status(404).json({ msg: `Error while deleting a task: ${e}` });
+    console.error("Error while deleting a task:", e);
+    return res
+      .status(500)
+      .json({ msg: `Internal Server Error while deleting a task` });
   }
 });
 
@@ -79,7 +87,7 @@ taskRoute.put("/update-task", authMiddleware, async (req, res) => {
     const { success, error } = TaskZod.safeParse(body);
 
     if (!success || !body._id) {
-      return res.status(402).json({ msg: error?.errors[0].message });
+      return res.status(400).json({ msg: error?.errors[0].message });
     }
 
     const updateTask = await TaskModel.updateOne(
@@ -95,12 +103,15 @@ taskRoute.put("/update-task", authMiddleware, async (req, res) => {
       }
     );
 
-    if (!updateTask.acknowledged) {
-      return res.status(404).json({ msg: `Error while updating a task` });
+    if (updateTask.matchedCount === 0) {
+      return res.status(404).json({ msg: "Task not found" });
     }
 
     return res.status(200).json({ msg: "Task Updated Successfully" });
   } catch (e) {
-    return res.status(404).json({ msg: `Error while updating a task: ${e}` });
+    console.error(`Error while updating a task: ${e}`);
+    return res
+      .status(500)
+      .json({ msg: `Internal Server Error while updating a task` });
   }
 });

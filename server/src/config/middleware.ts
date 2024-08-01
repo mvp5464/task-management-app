@@ -5,8 +5,8 @@ import { verify } from "jsonwebtoken";
 export const authMiddleware: RequestHandler = (req, res, next) => {
   const token = req.headers.authorization;
 
-  if (!token?.startsWith("bearer ")) {
-    return res.status(403).json({ msg: "No JWT provided" });
+  if (!token?.startsWith("Bearer ")) {
+    return res.status(401).json({ msg: "No JWT provided" });
   }
 
   try {
@@ -16,7 +16,7 @@ export const authMiddleware: RequestHandler = (req, res, next) => {
     res.locals.userId = decodeJWT;
     next();
   } catch (e) {
-    console.log("Error while parsing JWT:", e);
-    return res.status(403).json({ msg: "Error while parsing JWT" });
+    console.error("Error while parsing JWT:", e);
+    return res.status(401).json({ msg: "Invalid or expired JWT" });
   }
 };

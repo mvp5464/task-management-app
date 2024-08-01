@@ -24,7 +24,7 @@ export const TaskZod = z.object({
 });
 
 export const TaskDeleteZod = z.object({
-  _id: z.string().min(1),
+  _id: z.string().min(1, "Task ID is required for deletion"),
 });
 
 export type SignUpType = z.infer<typeof signUpZod>;
